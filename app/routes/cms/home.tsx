@@ -7,6 +7,7 @@ export default function CMSHomePage() {
 			<ul style={{ listStyle: "none", padding: 0 }}>
 				{[
 					{ to: "/cms/voucher", label: "Voucher" },
+					{ to: "/cms/organizer", label: "Organizer" },
 					{ to: "/cms/speaker", label: "Speaker" },
 					{ to: "/cms/volunteer", label: "Volunteer" },
 					{ to: "/cms/schedule", label: "Schedule" },

@@ -2,15 +2,15 @@ import { Calendar, MapPinned } from "lucide-react";
 import type { FC } from "react";
 
 export const CallForSponsorSection: FC = () => (
-	<section className="bg-[#F1F2F3]">
+	<section className="bg-white">
 		<div className="">
 			<div className="z-10 relative container m-auto">
 				<div className="pt-[12vh] sm:pt-[23vh]">
 					<div className="flex flex-col items-center justify-center">
-						<div className="font-extrabold px-8 py-4 font-display text-base lg:text-3xl pt-2 pr-4 pb-2 pl-4">
+						<div className="font-extrabold px-8 py-4 text-base lg:text-3xl pt-2 pr-4 pb-2 pl-4">
 							Be our Sponsor
 						</div>
-						<div className="font-display text-center text-[40px] lg:text-5xl mt-[0.4vh] font-bold font-weight-700 p-2">
+						<div className="text-center text-[40px] lg:text-5xl mt-[0.4vh] font-bold font-weight-700 p-2">
 							<p>
 								<span className="text-black">Let's Support PyCon ID 2026</span>
 							</p>
@@ -36,7 +36,7 @@ export const CallForSponsorSection: FC = () => (
 							rel="noreferrer"
 						>
 							<button
-								className="cursor-pointer bg-black hover:bg-black/50 backdrop-blur-lg text-white px-8 py-4 font-display text-lg lg:text-2xl pt-2 pr-4 pb-2 pl-4 mt-[3vh] font-bold outline-white/50 outline-offset-1 shadow-white/20"
+								className="cursor-pointer bg-black hover:bg-black/50 backdrop-blur-lg text-white px-8 py-4 text-lg lg:text-2xl pt-2 pr-4 pb-2 pl-4 mt-[3vh] font-bold outline-white/50 outline-offset-1 shadow-white/20"
 								type="button"
 							>
 								See Our Sponsorship Prospectus
@@ -44,7 +44,7 @@ export const CallForSponsorSection: FC = () => (
 						</a>
 						<div className="mt-[5vh] flex gap-x-5 flex-col gap-y-3 lg:flex-row items-center justify-center mx-2 text-justify px-10">
 							<div className="border border-black rounded-lg backdrop-blur-xl p-2">
-								<p className="border-b-1 border-black font-display font-bold text-black text-lg">
+								<p className="border-b-1 border-black font-bold text-black text-lg">
 									Engage with the Python Community
 								</p>
 								<p className="font-sans font-normal text-black my-5">
@@ -56,7 +56,7 @@ export const CallForSponsorSection: FC = () => (
 								</p>
 							</div>
 							<div className="border border-black  rounded-lg backdrop-blur-xl p-2">
-								<p className="border-b-1 border-black font-display font-bold text-black text-lg">
+								<p className="border-b-1 border-black font-bold text-black text-lg">
 									Amplify Your Brand Visibility
 								</p>
 								<p className="font-sans font-normal text-black my-5">
@@ -68,7 +68,7 @@ export const CallForSponsorSection: FC = () => (
 								</p>
 							</div>
 							<div className="border border-black  rounded-lg backdrop-blur-xl p-2">
-								<p className="border-b-1 border-black font-display font-bold text-black text-lg">
+								<p className="border-b-1 border-black font-bold text-black text-lg">
 									Support Open Source & Innovation
 								</p>
 								<p className="font-sans font-normal text-black my-5">

@@ -6,7 +6,7 @@ import { HeroSection } from "~/components/sections/home/hero";
 // import { ScheduleSection } from "~/components/sections/home/schedule";
 // import { ScheduleSection } from "~/components/sections/home/schedule";
 // import { SpeakersSection } from "~/components/sections/home/speakers";
-// import { SponsorSection } from "~/components/sections/home/sponsor";
+import { SponsorSection } from "~/components/sections/home/sponsor";
 
 export function meta() {
 	return [
@@ -23,7 +23,7 @@ export default function Home() {
 			{/* <ScheduleSection /> */}
 			{/* <ScheduleSection /> */}
 			{/* <SpeakersSection /> */}
-			{/* <SponsorSection /> */}
+			<SponsorSection />
 			{/* <CommunitySection /> */}
 			{/* <OurTeamSection /> */}
 			<Footer />

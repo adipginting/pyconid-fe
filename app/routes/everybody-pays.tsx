@@ -4,7 +4,7 @@ import { EverybodyPaysSection } from "~/components/sections/everybody-pays/every
 
 export function meta() {
 	return [
-		{ title: "PyCon ID 2025 Everybody Pays Policy" },
+		{ title: "PyCon ID Everybody Pays Policy" },
 		{
 			name: "Everybody Pays Policy",
 			content: "Everbody Pays page",

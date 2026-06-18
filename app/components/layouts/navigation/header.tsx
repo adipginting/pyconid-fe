@@ -13,12 +13,13 @@ export const Header = () => {
 		<header className="bg-surface text-white fixed inset-x-0 top-0 z-50 w-full">
 			<div className="flex items-center justify-between container mx-auto py-5 px-6 lg:px-12">
 				<div>
-					<img
-						// src="/images/PyCon ID 26 Logo@2x.png" // Gunakan logo versi terang
-						src="/images/logo-pycon-2026-light.png"
-						alt="PyconID 2026"
-						className="h-8 lg:h-10"
-					/>
+					<Link to="/">
+						<img
+							src="/svg/logo/2026/logo-white.svg"
+							alt="PyconID 2026"
+							className="h-8 lg:h-10"
+						/>
+					</Link>
 				</div>
 				<div
 					className={cn(

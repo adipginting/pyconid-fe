@@ -8,6 +8,16 @@ import { DashboardSection } from "~/components/sections/dashboard/dashboard";
 import { authenticator } from "~/services/auth/$.server";
 import type { Route } from "./+types/dashboard";
 
+export function meta() {
+	return [
+		{ title: "Dashboard | PyCon ID 2026" },
+		{
+			name: "PyCon ID 2026 Dashboard",
+			content: "Account dashboard for PyCon ID 2026",
+		},
+	];
+}
+
 export const loader = async ({ request }: Route.LoaderArgs) => {
 	const credentials = await authenticator.isAuthenticated(request);
 	if (!credentials) {

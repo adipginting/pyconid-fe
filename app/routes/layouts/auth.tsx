@@ -84,7 +84,7 @@ export default function AuthLayout() {
 						<div className="mb-6">
 							<img
 								alt="PyCon ID dark logo"
-								src="/images/PyCon ID 26 Logo@2x.png"
+								src="/svg/logo/2026/logo-black.svg"
 								className="h-14 w-auto lg:h-16"
 							/>
 						</div>

@@ -7,6 +7,16 @@ import { PaymentSection } from "~/components/sections/payment/payment";
 import { authenticator } from "~/services/auth/$.server";
 import type { Route } from "./+types/payment";
 
+export function meta() {
+	return [
+		{ title: "My Payment | PyCon ID 2026" },
+		{
+			name: "PyCon ID 2026 My Payment",
+			content: "Payment transactions for PyCon ID 2026",
+		},
+	];
+}
+
 export const loader = async ({ request }: Route.LoaderArgs) => {
 	const credentials = await authenticator.isAuthenticated(request);
 	if (!credentials) {

@@ -1,6 +1,8 @@
 // biome-ignore-all lint: Anoying
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
+import { useClickOutside } from "~/hooks/use-click-outside";
+import { useDebouncedCallback } from "~/hooks/use-debounce";
 
 const DropdownChevron = () => (
 	<img
@@ -23,6 +25,7 @@ export const DropdownSearch = ({
 	onChange,
 	disabled = false,
 	errorMessage,
+	isLoading = false,
 	className,
 }: {
 	label: string;
@@ -39,23 +42,24 @@ export const DropdownSearch = ({
 	onChange: (value: { label: string; value: string }) => void;
 	disabled?: boolean;
 	errorMessage?: string;
+	isLoading?: boolean;
 	className?: string;
 }) => {
+	const containerRef = useRef<HTMLDivElement>(null);
 	const [isOpen, setIsOpen] = useState(false);
-	// const [selectedItem, setSelectedItem] = useState<{
-	// 	label: string;
-	// 	value: string;
-	// } | null>(value);
-	// console.log({ selectedItem });
+	const [localSearch, setLocalSearch] = useState(searchInputValue ?? "");
+
+	useClickOutside(containerRef, () => setIsOpen(false));
+
+	const debouncedNotifyParent = useDebouncedCallback(onSearchInputChange, 300);
 
 	const handleSelectItem = (item: { label: string; value: string }) => {
-		// setSelectedItem(item);
 		setIsOpen(false);
 		onChange(item);
 	};
 
 	return (
-		<div className={twMerge("w-full relative", className)}>
+		<div ref={containerRef} className={twMerge("w-full relative", className)}>
 			<label htmlFor={id} className="block mb-2 text-sm font-medium text-black">
 				{label}
 			</label>
@@ -76,11 +80,16 @@ export const DropdownSearch = ({
 					errorMessage ? "border-red-500" : "border-gray-300",
 				)}
 				onClick={() => {
+					if (!isOpen) {
+						setLocalSearch(searchInputValue ?? "");
+					}
 					setIsOpen(!isOpen);
 				}}
-				value={isOpen ? (searchInputValue ?? "") : (value?.label ?? "")}
+				value={isOpen ? localSearch : (value?.label ?? "")}
 				onChange={(e) => {
-					onSearchInputChange(e.target.value);
+					const val = e.target.value;
+					setLocalSearch(val);
+					debouncedNotifyParent(val);
 				}}
 				disabled={disabled}
 			/>
@@ -96,19 +105,25 @@ export const DropdownSearch = ({
 					isOpen ? "block" : "hidden",
 				)}
 			>
-				{dropdownItems.map((item) => {
-					return (
-						<li
-							key={item.value}
-							onClick={() => {
-								handleSelectItem(item);
-							}}
-							className="hover:cursor-pointer hover:bg-[#224083] hover:text-white rounded-sm px-2"
-						>
-							{item.label}
-						</li>
-					);
-				})}
+				{isLoading ? (
+					<li className="px-2 py-1 text-gray-500 text-sm">Loading...</li>
+				) : dropdownItems.length === 0 ? (
+					<li className="px-2 py-1 text-gray-500 text-sm">No results found</li>
+				) : (
+					dropdownItems.map((item) => {
+						return (
+							<li
+								key={item.value}
+								onClick={() => {
+									handleSelectItem(item);
+								}}
+								className="hover:cursor-pointer hover:bg-[#224083] hover:text-white rounded-sm px-2"
+							>
+								{item.label}
+							</li>
+						);
+					})
+				)}
 			</ul>
 		</div>
 	);

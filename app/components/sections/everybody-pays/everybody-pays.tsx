@@ -5,10 +5,10 @@ export const EverybodyPaysSection: FC = () => (
 		<div className="z-10 relative container m-auto">
 			<div className="pt-[12vh] sm:pt-[23vh]">
 				<div className="px-4 sm:px-50 flex flex-col">
-					<h1 className="px-8 py-4 font-display text-4xl font-extrabold text-center">
+					<h1 className="px-8 py-4 text-4xl font-extrabold text-center">
 						"Everyone who can, pays"
 					</h1>
-					<h1 className="font-display text-3xl font-extrabold text-justify">
+					<h1 className="text-3xl font-extrabold text-justify">
 						Purpose of This Policy
 					</h1>
 					<div className="font-sans p-6 text-xl flex flex-col gap-4 leading-10 text-justify">
@@ -28,7 +28,7 @@ export const EverybodyPaysSection: FC = () => (
 							more money.
 						</p>
 					</div>
-					<h1 className="font-display text-3xl font-extrabold text-justify">
+					<h1 className="text-3xl font-extrabold text-justify">
 						Why are we doing this?
 					</h1>
 					<div className="font-sans p-6 text-xl flex flex-col gap-4 leading-10 text-justify">
@@ -68,7 +68,7 @@ export const EverybodyPaysSection: FC = () => (
 							</li>
 						</ul>
 					</div>
-					<h1 className="font-display text-3xl font-extrabold text-justify">
+					<h1 className="text-3xl font-extrabold text-justify">
 						Acknowledgement
 					</h1>
 					<div className="font-sans p-6 text-xl flex flex-col gap-4 leading-10 text-justify">

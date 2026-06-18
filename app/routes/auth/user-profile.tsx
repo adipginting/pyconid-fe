@@ -19,6 +19,16 @@ import { UserProfileSection } from "~/components/sections/user-profile/user-prof
 import { authenticator } from "~/services/auth/$.server";
 import type { Route } from "./+types/user-profile";
 
+export function meta() {
+	return [
+		{ title: "Edit Profile | PyCon ID 2026" },
+		{
+			name: "PyCon ID 2026 Edit Profile",
+			content: "Edit your profile for PyCon ID 2026",
+		},
+	];
+}
+
 export const loader = async ({ request }: Route.LoaderArgs) => {
 	const credentials = await authenticator.isAuthenticated(request);
 	if (!credentials) {

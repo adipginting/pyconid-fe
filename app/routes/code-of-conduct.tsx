@@ -4,9 +4,9 @@ import { CodeOfConductSection } from "~/components/sections/code-of-conduct/code
 
 export function meta() {
 	return [
-		{ title: "PyCon ID 2025 Code of Conduct" },
+		{ title: "PyCon ID Code of Conduct" },
 		{
-			name: "PyCon ID 2025 Code of Conduct",
+			name: "PyCon ID Code of Conduct",
 			content: "Code of Conduct page",
 		},
 	];

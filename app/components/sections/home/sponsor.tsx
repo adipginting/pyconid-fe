@@ -1,13 +1,13 @@
 export const SponsorSection = () => {
 	return (
-		<section className="pt-18 sm:pt-36 bg-[#F1F2F3] relative">
+		<section className="pt-18 sm:pt-36 relative">
 			<div className="container mx-auto text-white px-5 2xl:px-0">
 				<div className="flex flex-col items-center">
 					<div className="h-max mb-12 md:mb-12 md:top-12 text-center">
-						<p className="text-black font-display font-medium text-2xl md:text-3xl mb-4">
+						<p className="text-black font-medium text-2xl md:text-3xl mb-4">
 							We appreciate your support!
 						</p>
-						<h1 className="text-black font-display font-bold text-4xl md:text-[2.5rem] lg:text-[3.5rem] leading-tight mb-10">
+						<h1 className="text-black font-bold text-4xl md:text-[2.5rem] lg:text-[3.5rem] leading-tight mb-10">
 							Help us make this conference truly unforgettable
 						</h1>
 						<a
@@ -26,7 +26,7 @@ export const SponsorSection = () => {
 
 					<div className="p-5 text-center text-bold text-blue-900 text-2xl max-w-2xl">
 						<div>
-							{/* <h3 className="mb-5 font-display font-bold text-4xl">
+							{/* <h3 className="mb-5 font-bold text-4xl">
 								Our Sponsors
 							</h3> */}
 							<div className="grid grid-cols-1 gap-5">

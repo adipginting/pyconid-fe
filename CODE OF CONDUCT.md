@@ -2,15 +2,15 @@
 
 ---
 
-# Kode Etik Kontributor Proyek PyconID 2025 FE
+# Kode Etik Kontributor Proyek PyconID FE
 
-Selamat datang di proyek PyconID 2025 FE! Kami berkomitmen untuk menciptakan lingkungan yang ramah, inklusif, dan saling menghormati bagi semua kontributor. Kode Etik ini menguraikan harapan kami terhadap perilaku Anda dan konsekuensi dari perilaku yang tidak dapat diterima. Kami percaya bahwa dengan mengikuti prinsip-prinsip ini, kita dapat membangun komunitas yang kuat dan produktif.
+Selamat datang di proyek PyconID FE! Kami berkomitmen untuk menciptakan lingkungan yang ramah, inklusif, dan saling menghormati bagi semua kontributor. Kode Etik ini menguraikan harapan kami terhadap perilaku Anda dan konsekuensi dari perilaku yang tidak dapat diterima. Kami percaya bahwa dengan mengikuti prinsip-prinsip ini, kita dapat membangun komunitas yang kuat dan produktif.
 
 ---
 
 ## 1. Tujuan
 
-Kode Etik ini bertujuan untuk memastikan bahwa proyek PyconID 2025 FE adalah pengalaman yang positif dan aman bagi semua orang, terlepas dari tingkat keahlian, pengalaman, latar belakang etnis, orientasi seksual, identitas gender, disabilitas, penampilan fisik, ukuran tubuh, ras, usia, agama, atau kewarganegaraan.
+Kode Etik ini bertujuan untuk memastikan bahwa proyek PyconID FE adalah pengalaman yang positif dan aman bagi semua orang, terlepas dari tingkat keahlian, pengalaman, latar belakang etnis, orientasi seksual, identitas gender, disabilitas, penampilan fisik, ukuran tubuh, ras, usia, agama, atau kewarganegaraan.
 
 ---
 
@@ -30,7 +30,7 @@ Kami mengharapkan semua kontributor untuk:
 
 ## 3. Perilaku yang Tidak Dapat Diterima
 
-Perilaku berikut dianggap tidak dapat diterima dalam komunitas proyek PyconID 2025 FE:
+Perilaku berikut dianggap tidak dapat diterima dalam komunitas proyek PyconID FE:
 
 * **Pelecehan:** Komentar verbal atau tertulis yang menyinggung terkait dengan karakteristik pribadi (lihat bagian "Tujuan"), gambar seksual dalam ruang publik, intimidasi, penguntitan, kontak fisik yang tidak diinginkan, dan perhatian seksual yang tidak diinginkan.
 * **Diskriminasi:** Komentar atau tindakan diskriminatif berdasarkan salah satu karakteristik pribadi yang disebutkan di atas.
@@ -62,6 +62,6 @@ Kode Etik ini diadaptasi dari _Contributor Covenant_, versi 2.0, tersedia di [ht
 
 ## 6. Terima Kasih
 
-Dengan berkontribusi pada proyek PyconID 2025 FE, Anda setuju untuk mematuhi Kode Etik ini. Kami menghargai kontribusi Anda dan berharap dapat membangun komunitas yang positif dan produktif bersama.
+Dengan berkontribusi pada proyek PyconID FE, Anda setuju untuk mematuhi Kode Etik ini. Kami menghargai kontribusi Anda dan berharap dapat membangun komunitas yang positif dan produktif bersama.
 
 ---

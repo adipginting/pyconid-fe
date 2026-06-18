@@ -88,8 +88,8 @@ export default function CMSHomePage() {
 					</button>
 					<Link to="/">
 						<img
-							src="/images/logo-dark.webp"
-							alt="PyconID 2025"
+							src="/svg/logo/2026/logo-black.svg"
+							alt="PyconID 2026"
 							className="h-6 lg:h-12"
 						/>
 					</Link>
@@ -118,6 +118,14 @@ export default function CMSHomePage() {
 						)}
 					>
 						<Link to="/cms/voucher">Voucher</Link>
+					</li>
+					<li
+						className={twMerge(
+							"underline",
+							path === "organizer" ? "font-bold" : "",
+						)}
+					>
+						<Link to="/cms/organizer">Organizer</Link>
 					</li>
 					<li
 						className={twMerge(

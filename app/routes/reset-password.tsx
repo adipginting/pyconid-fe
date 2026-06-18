@@ -7,6 +7,7 @@ import {
 import z from "zod";
 import { resetPassword } from "~/api/endpoint/.server/auth";
 import { resetPasswordWithConfirmPasswordSchema } from "~/api/schema/auth";
+import { PasswordInput } from "~/components/shared/password-input/password-input";
 import {
 	commitMessageSession,
 	getMessageSession,
@@ -95,36 +96,16 @@ export default function ResetPasswordPage() {
 	return (
 		<main className="w-full">
 			<Form method="POST" className="space-y-4 w-full">
-				<div className="flex flex-col">
-					<label
-						htmlFor="new_password"
-						className="text-xs font-bold mb-1.5 text-gray-800"
-					>
-						New Password
-					</label>
-					<input
-						id="new_password"
-						name="new_password"
-						placeholder="******************"
-						type="password"
-						className="border border-neutral-200 bg-neutral-50/50 w-full h-12 text-gray-800 px-4 focus:outline-none focus:border-surface focus:ring-1 focus:ring-surface transition-all"
-					/>
-				</div>
-				<div className="flex flex-col">
-					<label
-						htmlFor="confirm_password"
-						className="text-xs font-bold mb-1.5 text-gray-800"
-					>
-						Confirm Password
-					</label>
-					<input
-						id="confirm_password"
-						name="confirm_password"
-						placeholder="******************"
-						type="password"
-						className="border border-neutral-200 bg-neutral-50/50 w-full h-12 text-gray-800 px-4 focus:outline-none focus:border-surface focus:ring-1 focus:ring-surface transition-all"
-					/>
-				</div>
+				<PasswordInput
+					id="new_password"
+					name="new_password"
+					label="New Password"
+				/>
+				<PasswordInput
+					id="confirm_password"
+					name="confirm_password"
+					label="Confirm Password"
+				/>
 				<button
 					type="submit"
 					className="bg-surface w-full h-12 text-white font-bold mt-2 cursor-pointer transition-all duration-150 hover:bg-surface/90 disabled:bg-surface/50 disabled:cursor-not-allowed"

@@ -8,7 +8,7 @@ export const Footer = () => {
 					{/* Column 1: Logo & Organizer */}
 					<div className="flex flex-col gap-6 items-start">
 						<img
-							src="/images/logo-pycon-2026-light.png"
+							src="/svg/logo/2026/logo-white.svg"
 							alt="PyCon ID 2026 Logo"
 							className="h-12 lg:h-16 object-contain"
 						/>

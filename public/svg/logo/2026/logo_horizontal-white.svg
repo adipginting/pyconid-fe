@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2563.04 481.26">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: -.04em;
+      }
+
+      .cls-2 {
+        letter-spacing: .02em;
+      }
+
+      .cls-3, .cls-4, .cls-5 {
+        fill: #f2f2f3;
+      }
+
+      .cls-6 {
+        letter-spacing: 0em;
+      }
+
+      .cls-4 {
+        font-size: 283.2px;
+      }
+
+      .cls-4, .cls-5 {
+        font-family: PlusJakartaSans-ExtraBold, 'Plus Jakarta Sans';
+        font-weight: 700;
+      }
+
+      .cls-5 {
+        font-size: 159.09px;
+      }
+
+      .cls-7 {
+        letter-spacing: .02em;
+      }
+
+      .cls-8 {
+        letter-spacing: .01em;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g>
+      <text class="cls-4" transform="translate(405.65 247.09)"><tspan class="cls-7" x="0" y="0">Py</tspan><tspan class="cls-8" x="365.6" y="0">C</tspan><tspan class="cls-7" x="587.06" y="0">on ID 2026</tspan></text>
+      <text class="cls-5" transform="translate(405.65 439.42)"><tspan x="0" y="0">Jaka</tspan><tspan class="cls-2" x="346.97" y="0">r</tspan><tspan x="411.55" y="0">ta, </tspan><tspan class="cls-6" x="661.31" y="0">A</tspan><tspan x="776.17" y="0">ugust 8-</tspan><tspan class="cls-1" x="1448.94" y="0">9</tspan><tspan x="1538.67" y="0">, 2026</tspan></text>
+      <g>
+        <circle class="cls-3" cx="265.43" cy="112.19" r="20.6" transform="translate(60.2 314.49) rotate(-67.5)"/>
+        <path class="cls-3" d="M298.31,260.84c12.92-8.73,23.68-19.67,32.26-32.84,12.24-18.8,18.36-41.68,18.36-68.64s-6.03-50.9-18.09-69.71c-12.06-18.8-28.65-32.99-49.75-42.57-21.11-9.58-45.32-14.37-72.63-14.37H56.26v317.05c-.58,9.87-4.09,17.93-10.57,24.14-7.13,6.82-16.53,10.24-28.19,10.24H0v90.28h47.98c20.22,0,37.78-4.01,52.69-12.04,14.9-8.03,26.37-19.27,34.41-33.72,6.59-11.86,10.64-22.27,12.05-50.58.46-9.34,0-37.4,0-37.4v-55.22h61.31c20.84,0,39.93-2.93,57.28-8.76l40.41,33.39-1.41-24.32,26.54.9-32.95-25.83ZM169.88,104.36l-3.79-.06c.2-12.92,5.43-24.99,14.71-33.99,9.28-8.99,21.52-13.81,34.43-13.63l-.06,3.79c-.24,0-.48,0-.73,0-11.64,0-22.63,4.45-31.01,12.57-8.56,8.29-13.37,19.42-13.56,31.33ZM244.83,178.37c-26.91,0-48.73-21.82-48.73-48.73s21.82-48.73,48.73-48.73,48.73,21.82,48.73,48.73-21.82,48.73-48.73,48.73Z"/>
+      </g>
+    </g>
+  </g>
+</svg>

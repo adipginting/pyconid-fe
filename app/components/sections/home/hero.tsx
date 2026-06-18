@@ -5,8 +5,9 @@ export const HeroSection: FC = () => {
 		<section className="min-h-svh pt-32 pb-20 flex flex-col justify-center container mx-auto px-6 lg:px-12">
 			{/* Big Typography */}
 			<div className="font-sans font-black text-foreground uppercase leading-[0.8] tracking-tighter mb-16 lg:mb-24">
-				<h1 className="text-[16vw] md:text-[180px] lg:text-[220px]">Jakarta</h1>
-				<h1 className="text-[16vw] md:text-[180px] lg:text-[220px]">2026</h1>
+				<img src="/svg/jakarta-2026.svg" alt="Jakarta 2026" />
+				{/* <h1 className="text-[16vw] md:text-[180px] lg:text-[220px]">Jakarta</h1>
+				<h1 className="text-[16vw] md:text-[180px] lg:text-[220px]">2026</h1> */}
 			</div>
 
 			{/* Description & Details Grid */}
@@ -23,7 +24,7 @@ export const HeroSection: FC = () => {
 							LOCATION
 						</p>
 						<p className="text-2xl lg:text-3xl font-bold text-foreground">
-							Binus University @Kemanggisan,
+							BINUS University, Anggrek Campus,
 							<br />
 							Jakarta
 						</p>

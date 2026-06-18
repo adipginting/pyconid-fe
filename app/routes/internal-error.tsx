@@ -3,8 +3,8 @@ import { InternalErrorSection } from "~/components/sections/internal-error/inter
 
 export function meta() {
 	return [
-		{ title: "PyCon ID 2025" },
-		{ name: "Internal error page", content: "Login page" },
+		{ title: "PyCon ID Internal Error" },
+		{ name: "Internal error page", content: "Internal error page" },
 	];
 }
 

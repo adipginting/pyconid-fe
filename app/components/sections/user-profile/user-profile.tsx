@@ -206,13 +206,18 @@ export const UserProfileSection = ({
 		search: null,
 		limit: 20,
 	});
-	const { data: dataCountry } = useQuery({
+	const {
+		data: dataCountry,
+		isLoading: isLoadingCountry,
+		isError: isErrorCountry,
+	} = useQuery({
 		queryKey: ["countries", searchCountry],
 		queryFn: async () => {
 			const res = await countriesApi(searchCountry);
 			const data = await res.json();
 			return countriesSchema.parseAsync(data);
 		},
+		retry: false,
 	});
 
 	const [selectedState, setSelectedState] = useState<{
@@ -235,7 +240,11 @@ export const UserProfileSection = ({
 		country_id: userProfile.country?.id ?? 0,
 		limit: 20,
 	});
-	const { data: dataStates } = useQuery({
+	const {
+		data: dataStates,
+		isLoading: isLoadingStates,
+		isError: isErrorStates,
+	} = useQuery({
 		queryKey: ["states", searchStates, selectedCountry?.value],
 		queryFn: async () => {
 			const country_id = parseInt(selectedCountry?.value || "0");
@@ -247,6 +256,7 @@ export const UserProfileSection = ({
 			return statesSchema.parseAsync(data);
 		},
 		enabled: !!selectedCountry?.value,
+		retry: false,
 	});
 
 	const [selectedCity, setSelectedCity] = useState<{
@@ -271,7 +281,11 @@ export const UserProfileSection = ({
 		state_id: userProfile.state?.id ?? 0,
 		limit: 20,
 	});
-	const { data: dataCities } = useQuery({
+	const {
+		data: dataCities,
+		isLoading: isLoadingCities,
+		isError: isErrorCities,
+	} = useQuery({
 		queryKey: ["cities", searchCities, selectedState?.value],
 		queryFn: async () => {
 			const state_id = parseInt(selectedState?.value || "0");
@@ -285,6 +299,7 @@ export const UserProfileSection = ({
 			return citiesSchema.parseAsync(data);
 		},
 		enabled: !!selectedState?.value && !!selectedCountry?.value,
+		retry: false,
 	});
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -577,6 +592,10 @@ export const UserProfileSection = ({
 								onSearchInputChange={(value) => {
 									setSearchCountry((prev) => ({ ...prev, search: value }));
 								}}
+								isLoading={isLoadingCountry}
+								errorMessage={
+									isErrorCountry ? "Failed to load countries" : undefined
+								}
 								className="[&>input]:border-[#282828]"
 							/>
 							<div className="flex flex-col md:flex-row gap-4">
@@ -607,6 +626,10 @@ export const UserProfileSection = ({
 										setSearchStates((prev) => ({ ...prev, search: value }));
 									}}
 									disabled={!selectedCountry}
+									isLoading={isLoadingStates}
+									errorMessage={
+										isErrorStates ? "Failed to load states" : undefined
+									}
 									className="[&>input]:border-[#282828]"
 								/>
 								<DropdownSearch
@@ -635,6 +658,10 @@ export const UserProfileSection = ({
 										setSearchCities((prev) => ({ ...prev, search: value }));
 									}}
 									disabled={!selectedState || !selectedCountry}
+									isLoading={isLoadingCities}
+									errorMessage={
+										isErrorCities ? "Failed to load cities" : undefined
+									}
 									className="[&>input]:border-[#282828]"
 								/>
 							</div>
@@ -678,7 +705,7 @@ export const UserProfileSection = ({
 									label="Github Username"
 									id="github_username"
 									name="github_username"
-									placeholder="https://github.com/username"
+									placeholder="github-username"
 									defaultValue={userProfile.github_username || ""}
 									inputClassName="border-[#282828]"
 								/>
@@ -688,7 +715,7 @@ export const UserProfileSection = ({
 									label="Facebook Username"
 									id="facebook_username"
 									name="facebook_username"
-									placeholder="https://facebook.com/username"
+									placeholder="facebook-username"
 									defaultValue={userProfile.facebook_username || ""}
 									inputClassName="border-[#282828]"
 								/>
@@ -696,7 +723,7 @@ export const UserProfileSection = ({
 									label="LinkedIn Username"
 									id="linkedin_username"
 									name="linkedin_username"
-									placeholder="https://linkedin.com/in/username"
+									placeholder="linkedin-username"
 									defaultValue={userProfile.linkedin_username || ""}
 									inputClassName="border-[#282828]"
 								/>
@@ -706,7 +733,7 @@ export const UserProfileSection = ({
 									label="X/Twitter Username"
 									id="twitter_username"
 									name="twitter_username"
-									placeholder="https://x.com/username"
+									placeholder="x-username"
 									defaultValue={userProfile.twitter_username || ""}
 									inputClassName="border-[#282828]"
 								/>
@@ -714,7 +741,7 @@ export const UserProfileSection = ({
 									label="Instagram Username"
 									id="instagram_username"
 									name="instagram_username"
-									placeholder="https://instagram.com/username"
+									placeholder="instagram-username"
 									defaultValue={userProfile.instagram_username || ""}
 									inputClassName="border-[#282828]"
 								/>
@@ -862,7 +889,7 @@ function AccordionSection({
 	onToggle: () => void;
 }) {
 	return (
-		<div className="border border-[#282828] rounded-lg overflow-hidden bg-white">
+		<div className="border border-[#282828] rounded-lg bg-white">
 			<button
 				type="button"
 				onClick={onToggle}

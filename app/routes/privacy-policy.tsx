@@ -4,9 +4,9 @@ import { PrivacyPolicySection } from "~/components/sections/privacy-policy/priva
 
 export function meta() {
 	return [
-		{ title: "PyCon ID 2025 Privacy Policy" },
+		{ title: "PyCon ID Privacy Policy" },
 		{
-			name: "PyCon ID 2025 Privacy Policy",
+			name: "PyCon ID Privacy Policy",
 			content: "PrivacyPolicy page",
 		},
 	];

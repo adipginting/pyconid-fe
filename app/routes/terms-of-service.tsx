@@ -4,9 +4,9 @@ import { TermsOfServiceSection } from "~/components/sections/terms-of-service/te
 
 export function meta() {
 	return [
-		{ title: "PyCon ID 2025 Terms of Service" },
+		{ title: "PyCon ID Terms of Service" },
 		{
-			name: "PyCon ID 2025 Terms of Service",
+			name: "PyCon ID Terms of Service",
 			content: "Terms of Service page",
 		},
 	];

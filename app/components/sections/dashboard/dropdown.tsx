@@ -1,6 +1,8 @@
 // biome-ignore-all lint: Anoying
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
+import { useClickOutside } from "~/hooks/use-click-outside";
+import { useSyncedSelection } from "~/hooks/use-synced-selection";
 
 const DropdownChevron = () => (
 	<img
@@ -35,25 +37,14 @@ export const Dropdown = ({
 	disabled?: boolean;
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
-	const [selectedItem, setSelectedItem] = useState<{
-		label: string;
-		value: string;
-	} | null>(
-		value ? dropdownItems.find((item) => item.value === value) || null : null,
+	const [selectedItem, setSelectedItem] = useSyncedSelection(
+		value,
+		dropdownItems,
 	);
 
-	const lastSyncedValueRef = useRef(value);
+	const containerRef = useRef<HTMLDivElement>(null);
 
-	useEffect(() => {
-		if (lastSyncedValueRef.current !== value) {
-			lastSyncedValueRef.current = value;
-			setSelectedItem(
-				value
-					? dropdownItems.find((item) => item.value === value) || null
-					: null,
-			);
-		}
-	}, [value, dropdownItems]);
+	useClickOutside(containerRef, () => setIsOpen(false));
 
 	const handleSelectItem = (item: { label: string; value: string }) => {
 		setSelectedItem(item);
@@ -62,7 +53,7 @@ export const Dropdown = ({
 	};
 
 	return (
-		<div className={twMerge("w-full relative", className)}>
+		<div ref={containerRef} className={twMerge("w-full relative", className)}>
 			<label htmlFor={id} className="block mb-2 text-xs text-[#282828]">
 				{label}
 			</label>

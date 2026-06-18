@@ -2,7 +2,7 @@ export const Hero = ({ text }: { text: string }) => {
 	return (
 		<section className="relative bg-[#282828] overflow-hidden">
 			<div className="absolute right-20 bottom-10">
-				<div className="hidden lg:flex items-center gap-4">
+				{/* <div className="hidden lg:flex items-center gap-4">
 					<img
 						src="/images/logo-pycon-2026-light.png"
 						alt="PyCon ID 2026"
@@ -13,7 +13,7 @@ export const Hero = ({ text }: { text: string }) => {
 						alt="Python ID"
 						className="h-10"
 					/>
-				</div>
+				</div> */}
 			</div>
 			{/* Decorative Ellipse */}
 			<div className="absolute -right-25 top-[125px] w-[522px] h-[522px] rounded-full border-[75px] border-[#909090] opacity-20" />
