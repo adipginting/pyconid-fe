@@ -41,6 +41,7 @@ export const ScheduleItemSchema = z.object({
 	id: z.string(),
 	title: z.string(),
 	speaker: SpeakerSchema.nullable(),
+	co_speaker: SpeakerSchema.nullable().optional(),
 	room: RoomSchema,
 	schedule_type: ScheduleTypeSchema,
 	presentation_language: LanguageEnum.nullable(),
@@ -107,6 +108,10 @@ export const ScheduleByIdSchema = z.object({
 	title: z.string(),
 
 	speaker: z.union([PublicSpeakerInfoSchema, z.null()]).nullable(),
+	co_speaker: z
+		.union([PublicSpeakerInfoSchema, z.null()])
+		.nullable()
+		.optional(),
 
 	room: RoomSchema,
 	schedule_type: ScheduleTypeSchema,

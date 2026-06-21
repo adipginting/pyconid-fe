@@ -28,7 +28,6 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 export default function Schedules({ loaderData }: Route.ComponentProps) {
 	const { page, page_size, search, schedule_date, all } = loaderData;
 
-	// 1. Fetch schedule utama
 	const { data: dataSchedule } = useQuery({
 		queryKey: ["schedule", page, page_size, search, schedule_date, all],
 		queryFn: async () => {
@@ -44,10 +43,12 @@ export default function Schedules({ loaderData }: Route.ComponentProps) {
 		},
 	});
 
+	const listSchedule = dataSchedule?.results || [];
+
 	return (
 		<main>
 			<Header />
-			<SchedulesSection listSchedule={dataSchedule?.results || []} />
+			<SchedulesSection listSchedule={listSchedule} />
 			<Footer />
 		</main>
 	);
