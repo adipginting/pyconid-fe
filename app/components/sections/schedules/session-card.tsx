@@ -11,7 +11,7 @@ interface SessionCardProps {
 function SpeakerRow({
 	speaker,
 }: {
-	speaker: NonNullable<ScheduleItemType["speaker"]>;
+	speaker: ScheduleItemType["speakers"][number];
 }) {
 	const name = `${speaker.user.first_name} ${speaker.user.last_name}`;
 
@@ -61,7 +61,6 @@ export const SessionCard = ({ onClick, data, className }: SessionCardProps) => {
 				className,
 			)}
 		>
-			{/* Header: type tag + language pill */}
 			<div className="flex items-start justify-between gap-3">
 				<div className="flex items-center gap-1 text-schedule-muted-text">
 					<img
@@ -82,26 +81,22 @@ export const SessionCard = ({ onClick, data, className }: SessionCardProps) => {
 				)}
 			</div>
 
-			{/* Title */}
 			<h3 className="text-schedule-heading-dark font-bold text-lg leading-snug">
 				{data.title}
 			</h3>
 
-			{/* Speakers */}
-			{data.speaker && (
+			{data.speakers.length > 0 && (
 				<div className="flex flex-col gap-2">
-					<SpeakerRow speaker={data.speaker} />
-					{data.co_speaker && <SpeakerRow speaker={data.co_speaker} />}
+					{data.speakers.map((speaker) => (
+						<SpeakerRow key={speaker.id} speaker={speaker} />
+					))}
 				</div>
 			)}
 
-			{/* Chevron divider */}
 			<div className="flex items-center gap-2">
 				<div className="h-px flex-1 bg-schedule-card-border" />
 				<ChevronRight className="w-4 h-4 text-schedule-card-border shrink-0" />
 			</div>
-
-			{/* Footer: duration + location */}
 			<div className="flex items-center gap-2 text-sm text-schedule-muted-text">
 				<div className="flex items-center gap-1">
 					<span className="font-normal">Duration:</span>

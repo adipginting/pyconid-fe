@@ -27,6 +27,12 @@ export const SpeakerSchema = z.object({
 	speaker_type: SpeakerTypeSchema.nullable(),
 });
 
+export const SpeakerRoleEnum = z.enum(["Main Speaker", "Co Speaker"]);
+
+export const ScheduleSpeakerSchema = SpeakerSchema.extend({
+	type: SpeakerRoleEnum,
+});
+
 export const RoomSchema = z.object({
 	id: z.string(),
 	name: z.string(),
@@ -40,8 +46,7 @@ export const ScheduleTypeSchema = z.object({
 export const ScheduleItemSchema = z.object({
 	id: z.string(),
 	title: z.string(),
-	speaker: SpeakerSchema.nullable(),
-	co_speaker: SpeakerSchema.nullable().optional(),
+	speakers: z.array(ScheduleSpeakerSchema),
 	room: RoomSchema,
 	schedule_type: ScheduleTypeSchema,
 	presentation_language: LanguageEnum.nullable(),
@@ -103,15 +108,15 @@ const PublicSpeakerInfoSchema = z.object({
 	speaker_type: z.union([SpeakerTypeSchema, z.null()]).nullable(),
 });
 
+export const ScheduleByIdSpeakerSchema = PublicSpeakerInfoSchema.extend({
+	type: SpeakerRoleEnum,
+});
+
 export const ScheduleByIdSchema = z.object({
 	id: z.string(),
 	title: z.string(),
 
-	speaker: z.union([PublicSpeakerInfoSchema, z.null()]).nullable(),
-	co_speaker: z
-		.union([PublicSpeakerInfoSchema, z.null()])
-		.nullable()
-		.optional(),
+	speakers: z.array(ScheduleByIdSpeakerSchema),
 
 	room: RoomSchema,
 	schedule_type: ScheduleTypeSchema,

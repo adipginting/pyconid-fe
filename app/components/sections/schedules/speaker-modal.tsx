@@ -1,4 +1,4 @@
-import { Globe, X } from "lucide-react";
+import { Facebook, Globe, Linkedin, X } from "lucide-react";
 import type { ScheduleByIdResponseType } from "~/api/schema/schedule";
 import { cn, onAvatarError, parseSpeakerImage } from "~/lib/utils";
 
@@ -31,7 +31,7 @@ function SocialLink({
 	label,
 }: {
 	href: string;
-	icon: string;
+	icon: React.ReactNode;
 	label: string;
 }) {
 	return (
@@ -40,9 +40,9 @@ function SocialLink({
 			target="_blank"
 			rel="noopener noreferrer"
 			aria-label={label}
-			className="flex items-center justify-center transition-colors"
+			className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center bg-schedule-heading-light/10 hover:bg-schedule-heading-light/20 transition-colors"
 		>
-			<img src={icon} alt={label} className="size-8 md:size-10" />
+			{icon}
 		</a>
 	);
 }
@@ -50,7 +50,7 @@ function SocialLink({
 function SpeakerDetailBlock({
 	speaker,
 }: {
-	speaker: NonNullable<ScheduleByIdResponseType["speaker"]>;
+	speaker: ScheduleByIdResponseType["speakers"][number];
 }) {
 	const first_name = speaker.user.first_name;
 	const last_name = speaker.user.last_name;
@@ -58,22 +58,54 @@ function SpeakerDetailBlock({
 	const job_title = speaker.user.job_title;
 	const bio = speaker.user.bio;
 
+	const iconClass = "w-4 h-4 md:w-5 md:h-5 text-schedule-heading-light";
+
 	const socials = [
 		{
+			href: speaker.user.website || "",
+			icon: <Globe className={iconClass} />,
+			label: "Website",
+			value: speaker.user.website,
+		},
+		{
+			href: `https://www.facebook.com/${speaker.user.facebook_username}`,
+			icon: <Facebook className={iconClass} />,
+			label: "Facebook",
+			value: speaker.user.facebook_username,
+		},
+		{
+			href: `https://www.linkedin.com/in/${speaker.user.linkedin_username}`,
+			icon: <Linkedin className={iconClass} />,
+			label: "LinkedIn",
+			value: speaker.user.linkedin_username,
+		},
+		{
 			href: `https://www.instagram.com/${speaker.user.instagram_username}`,
-			icon: "/svg/ig.svg",
+			icon: (
+				<img
+					src="/svg/ig.svg"
+					alt="Instagram"
+					className="w-4 h-4 md:w-5 md:h-5"
+				/>
+			),
 			label: "Instagram",
 			value: speaker.user.instagram_username,
 		},
 		{
 			href: `mailto:${speaker.user.email}`,
-			icon: "/svg/mail.svg",
+			icon: (
+				<img
+					src="/svg/mail.svg"
+					alt="Email"
+					className="w-4 h-4 md:w-5 md:h-5"
+				/>
+			),
 			label: "Email",
 			value: speaker.user.email,
 		},
 		{
 			href: `https://x.com/${speaker.user.twitter_username}`,
-			icon: "/svg/x.svg",
+			icon: <img src="/svg/x.svg" alt="X" className="w-4 h-4 md:w-5 md:h-5" />,
 			label: "X",
 			value: speaker.user.twitter_username,
 		},
@@ -145,13 +177,10 @@ export const SpeakerModal = ({
 	if (!isOpen || !scheduleDetail) return null;
 
 	const duration = formatDuration(scheduleDetail.start, scheduleDetail.end);
-	const speakers = [scheduleDetail.speaker, scheduleDetail.co_speaker].filter(
-		(s): s is NonNullable<typeof s> => !!s,
-	);
+	const speakers = scheduleDetail.speakers;
 
 	return (
 		<div className="fixed inset-0 z-50 flex items-start md:items-center justify-center p-0 md:p-6">
-			{/* Backdrop */}
 			<button
 				type="button"
 				className="absolute inset-0 bg-black/30 backdrop-blur-md"
@@ -159,7 +188,6 @@ export const SpeakerModal = ({
 				aria-label="Close modal"
 			/>
 
-			{/* Modal card */}
 			<div
 				className={cn(
 					"relative z-10 w-[calc(100%-3rem)] md:w-full md:max-w-2xl lg:max-w-3xl max-h-[90dvh] overflow-y-auto mx-auto",
@@ -167,14 +195,12 @@ export const SpeakerModal = ({
 					"p-6 md:p-12",
 				)}
 			>
-				{/* Decorative accent */}
 				<img
 					src="/svg/hero-accent.svg"
 					alt=""
 					className="absolute -top-13 -left-8 w-20 md:w-28 opacity-50 pointer-events-none"
 				/>
 
-				{/* Close button */}
 				<div className="flex justify-end mb-4">
 					<button
 						type="button"
@@ -186,7 +212,6 @@ export const SpeakerModal = ({
 					</button>
 				</div>
 
-				{/* Tags */}
 				<div className="flex items-center justify-between gap-4 mb-3">
 					<div className="flex items-center gap-1 text-schedule-muted-text">
 						<img
@@ -209,12 +234,10 @@ export const SpeakerModal = ({
 					)}
 				</div>
 
-				{/* Title */}
 				<h2 className="text-schedule-heading-light font-display text-xl md:text-2xl font-bold mb-4">
 					{scheduleDetail.title}
 				</h2>
 
-				{/* Duration / Location */}
 				<div className="flex flex-wrap items-center gap-2 text-sm text-schedule-muted-text mb-6">
 					<div className="flex items-center gap-1">
 						<span className="font-normal">Duration:</span>
@@ -227,7 +250,6 @@ export const SpeakerModal = ({
 					</div>
 				</div>
 
-				{/* About the Session */}
 				{scheduleDetail.description && (
 					<div className="mb-6">
 						<h3 className="text-schedule-muted-text font-bold text-base mb-1">
@@ -239,10 +261,8 @@ export const SpeakerModal = ({
 					</div>
 				)}
 
-				{/* Divider */}
 				<div className="h-px bg-schedule-card-border/50 mb-6" />
 
-				{/* About the Speaker */}
 				{speakers.length > 0 && (
 					<div className="space-y-6">
 						<h3 className="text-schedule-muted-text font-bold text-base">
@@ -254,7 +274,6 @@ export const SpeakerModal = ({
 					</div>
 				)}
 
-				{/* Watch now button */}
 				<div className="mt-8">
 					<a
 						href={`/schedule/${scheduleDetail.id}`}
