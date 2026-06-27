@@ -13,13 +13,13 @@ function SpeakerRow({
 }: {
 	speaker: ScheduleItemType["speakers"][number];
 }) {
-	const name = `${speaker.user.first_name} ${speaker.user.last_name}`;
+	const name = `${speaker.speaker.user.first_name} ${speaker.speaker.user.last_name}`;
 
 	return (
 		<div className="flex items-center gap-2">
 			<div className="w-[26px] h-[26px] overflow-hidden shrink-0">
 				<img
-					src={parseSpeakerImage({ id: speaker.id })}
+					src={parseSpeakerImage({ id: speaker.speaker.id })}
 					alt={name}
 					onError={onAvatarError}
 					className="object-cover w-full h-full"
@@ -88,7 +88,7 @@ export const SessionCard = ({ onClick, data, className }: SessionCardProps) => {
 			{data.speakers.length > 0 && (
 				<div className="flex flex-col gap-2">
 					{data.speakers.map((speaker) => (
-						<SpeakerRow key={speaker.id} speaker={speaker} />
+						<SpeakerRow key={speaker.speaker.id} speaker={speaker} />
 					))}
 				</div>
 			)}

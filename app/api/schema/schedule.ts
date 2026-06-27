@@ -22,8 +22,12 @@ export const SpeakerTypeSchema = z.object({
 });
 
 export const SpeakerSchema = z.object({
-	id: z.string(),
-	user: UserSchema,
+	order: z.number(),
+	type: z.string(),
+	speaker: z.object({
+		id: z.string(),
+		user: UserSchema,
+	}),
 	speaker_type: SpeakerTypeSchema.nullable(),
 });
 
@@ -108,8 +112,10 @@ const PublicSpeakerInfoSchema = z.object({
 	speaker_type: z.union([SpeakerTypeSchema, z.null()]).nullable(),
 });
 
-export const ScheduleByIdSpeakerSchema = PublicSpeakerInfoSchema.extend({
+export const ScheduleByIdSpeakerSchema = z.object({
+	order: z.number(),
 	type: SpeakerRoleEnum,
+	speaker: PublicSpeakerInfoSchema,
 });
 
 export const ScheduleByIdSchema = z.object({

@@ -52,35 +52,35 @@ function SpeakerDetailBlock({
 }: {
 	speaker: ScheduleByIdResponseType["speakers"][number];
 }) {
-	const first_name = speaker.user.first_name;
-	const last_name = speaker.user.last_name;
-	const company = speaker.user.company;
-	const job_title = speaker.user.job_title;
-	const bio = speaker.user.bio;
+	const first_name = speaker.speaker.user.first_name;
+	const last_name = speaker.speaker.user.last_name;
+	const company = speaker.speaker.user.company;
+	const job_title = speaker.speaker.user.job_title;
+	const bio = speaker.speaker.user.bio;
 
 	const iconClass = "w-4 h-4 md:w-5 md:h-5 text-schedule-heading-light";
 
 	const socials = [
 		{
-			href: speaker.user.website || "",
+			href: speaker.speaker.user.website || "",
 			icon: <Globe className={iconClass} />,
 			label: "Website",
-			value: speaker.user.website,
+			value: speaker.speaker.user.website,
 		},
 		{
-			href: `https://www.facebook.com/${speaker.user.facebook_username}`,
+			href: `https://www.facebook.com/${speaker.speaker.user.facebook_username}`,
 			icon: <Facebook className={iconClass} />,
 			label: "Facebook",
-			value: speaker.user.facebook_username,
+			value: speaker.speaker.user.facebook_username,
 		},
 		{
-			href: `https://www.linkedin.com/in/${speaker.user.linkedin_username}`,
+			href: `https://www.linkedin.com/in/${speaker.speaker.user.linkedin_username}`,
 			icon: <Linkedin className={iconClass} />,
 			label: "LinkedIn",
-			value: speaker.user.linkedin_username,
+			value: speaker.speaker.user.linkedin_username,
 		},
 		{
-			href: `https://www.instagram.com/${speaker.user.instagram_username}`,
+			href: `https://www.instagram.com/${speaker.speaker.user.instagram_username}`,
 			icon: (
 				<img
 					src="/svg/ig.svg"
@@ -89,10 +89,10 @@ function SpeakerDetailBlock({
 				/>
 			),
 			label: "Instagram",
-			value: speaker.user.instagram_username,
+			value: speaker.speaker.user.instagram_username,
 		},
 		{
-			href: `mailto:${speaker.user.email}`,
+			href: `mailto:${speaker.speaker.user.email}`,
 			icon: (
 				<img
 					src="/svg/mail.svg"
@@ -101,13 +101,13 @@ function SpeakerDetailBlock({
 				/>
 			),
 			label: "Email",
-			value: speaker.user.email,
+			value: speaker.speaker.user.email,
 		},
 		{
-			href: `https://x.com/${speaker.user.twitter_username}`,
+			href: `https://x.com/${speaker.speaker.user.twitter_username}`,
 			icon: <img src="/svg/x.svg" alt="X" className="w-4 h-4 md:w-5 md:h-5" />,
 			label: "X",
-			value: speaker.user.twitter_username,
+			value: speaker.speaker.user.twitter_username,
 		},
 	].filter((item) => item.value);
 
@@ -116,7 +116,7 @@ function SpeakerDetailBlock({
 			<div className="shrink-0 mx-auto md:mx-0">
 				<div className="size-30 overflow-hidden bg-schedule-heading-light/10">
 					<img
-						src={parseSpeakerImage({ id: speaker.id })}
+						src={parseSpeakerImage({ id: speaker.speaker.id })}
 						alt={`${first_name} ${last_name}`}
 						onError={onAvatarError}
 						className="object-cover w-full h-full"
@@ -269,7 +269,7 @@ export const SpeakerModal = ({
 							About the Speaker{speakers.length > 1 ? "s" : ""}
 						</h3>
 						{speakers.map((speaker) => (
-							<SpeakerDetailBlock key={speaker.id} speaker={speaker} />
+							<SpeakerDetailBlock key={speaker.speaker.id} speaker={speaker} />
 						))}
 					</div>
 				)}

@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { getScheduleById } from "~/api/endpoint/.client/schedule";
-import type {
-	ResultScheduleType,
-	ScheduleItemType,
+import {
+	type ResultScheduleType,
+	ScheduleByIdSchema,
+	type ScheduleItemType,
 } from "~/api/schema/schedule";
 import { Hero } from "~/components/shared/hero/hero";
 import { SessionCard } from "./session-card";
@@ -45,14 +46,14 @@ function groupScheduleByHour(schedules: ResultScheduleType) {
 	return Object.entries(groups);
 }
 
-function sortSpeakersByRole<
-	T extends { speakers: { type: "Main Speaker" | "Co Speaker" }[] },
->(item: T): T {
+function sortSpeakersByOrder<T extends { speakers: { order: number }[] }>(
+	item: T,
+): T {
 	return {
 		...item,
 		speakers: [...item.speakers].sort((a, b) => {
-			if (a.type === "Main Speaker" && b.type !== "Main Speaker") return -1;
-			if (a.type !== "Main Speaker" && b.type === "Main Speaker") return 1;
+			if (a.order < b.order) return -1;
+			if (a.order > b.order) return 1;
 			return 0;
 		}),
 	};
@@ -78,8 +79,9 @@ export const SchedulesSection = ({
 		queryFn: async () => {
 			const res = await getScheduleById({ id: selectedScheduleId || "" });
 			const data = await res.json();
+			const parsed = await ScheduleByIdSchema.parseAsync(data);
 			setOpen(true);
-			return data;
+			return parsed;
 		},
 		enabled: !!selectedScheduleId,
 	});
@@ -105,7 +107,7 @@ export const SchedulesSection = ({
 
 	const filteredSchedule = listSchedule
 		.filter((item) => item.start.startsWith(selectedDate))
-		.map(sortSpeakersByRole);
+		.map(sortSpeakersByOrder);
 
 	const schedulesByHour = groupScheduleByHour(filteredSchedule);
 
@@ -113,7 +115,7 @@ export const SchedulesSection = ({
 		<section className="bg-schedule-page-bg min-h-screen">
 			<SpeakerModal
 				scheduleDetail={
-					detailSchedule.data ? sortSpeakersByRole(detailSchedule.data) : null
+					detailSchedule.data ? sortSpeakersByOrder(detailSchedule.data) : null
 				}
 				isOpen={detailSchedule.data ? open : false}
 				onClose={() => {
