@@ -63,6 +63,8 @@ export default [
 			route("/volunteer", "routes/cms/volunteer.tsx"),
 			route("/volunteer/create", "routes/cms/volunteer-create.tsx"),
 			route("/volunteer/:id/edit", "routes/cms/volunteer-edit.tsx"),
+			route("/user", "routes/cms/user.tsx"),
+			route("/user/:id/edit", "routes/cms/user-edit.tsx"),
 			route("/schedule", "routes/cms/schedule.tsx"),
 			route("/schedule/create", "routes/cms/schedule-create.tsx"),
 			route("/schedule/:id/edit", "routes/cms/schedule-edit.tsx"),
