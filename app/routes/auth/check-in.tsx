@@ -104,7 +104,7 @@ export default function CheckInPage(componentProps: Route.ComponentProps) {
 	return (
 		<main className="bg-[#F1F2F3] min-h-screen flex flex-col justify-between">
 			<Header />
-			<section className="bg-white rounded-2xl mt-[16vh]  md:min-w-[750px] p-4 md:mx-auto mx-4 flex flex-col gap-4">
+			<section className="bg-white rounded-2xl mt-[16vh]  md:min-w-[750px] p-4 mb-4 md:mx-auto mx-4 flex flex-col gap-4">
 				<h3 className="text-2xl font-bold text-center">Check In</h3>
 				<Form className="w-full flex justify-end" method="GET">
 					<input
@@ -116,7 +116,7 @@ export default function CheckInPage(componentProps: Route.ComponentProps) {
 					/>
 					<button
 						type="submit"
-						className="bg-secondary text-white p-2 rounded-md min-w-[100px]"
+						className="bg-secondary text-black p-2 border solid border-black rounded-md min-w-[100px]"
 					>
 						Check In
 					</button>

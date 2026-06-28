@@ -10,8 +10,9 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router";
 import type { GetUserProfileSchema } from "~/api/schema/user_profile";
+import { Checkbox } from "~/components/sections/dashboard/checkbox";
+import { DashboardMenu } from "~/components/shared/dashboard-menu";
 import { Hero } from "~/components/shared/hero/hero";
-import { TicketDashboardSwitch } from "~/components/shared/ticket-dashboard-switch";
 import { parseProfileImage } from "~/lib/utils";
 import { useRootLoaderData } from "~/root";
 
@@ -56,7 +57,16 @@ export const DashboardSection = ({
 
 	return (
 		<div className="min-h-[calc(100dvh-120px)]">
-			<Hero text="My Profile" nav=<TicketDashboardSwitch /> />
+			<Hero
+				text="My Profile"
+				nav={
+					<DashboardMenu
+						showCheckIn={["Management", "Volunteer", "Organizer"].includes(
+							me.participant_type || "",
+						)}
+					/>
+				}
+			/>
 
 			{/* Main Card */}
 			<div className="mx-auto px-6 lg:px-12 py-9">
@@ -203,50 +213,6 @@ export const DashboardSection = ({
 						{/* Divider */}
 						<div className="h-[1px] bg-[#282828] mx-8 lg:mx-14" />
 
-						{/* Attendance */}
-						{(userProfile.attendance_day_1 || userProfile.attendance_day_2) && (
-							<div className="px-8 lg:px-14 py-8">
-								<h2 className="text-[34px] font-bold text-[#282828] mb-6">
-									Attendance
-								</h2>
-								<div className="flex flex-wrap gap-20">
-									{userProfile.attendance_day_1 && (
-										<div className="flex flex-col gap-2 min-w-[180px]">
-											<span className="text-xl text-[#282828] font-bold">
-												Day 1
-											</span>
-											<span className="text-2xl text-[#282828]">
-												{userProfile.attendance_day_1_at
-													? new Date(
-															userProfile.attendance_day_1_at,
-														).toLocaleString()
-													: "Checked in"}
-											</span>
-										</div>
-									)}
-									{userProfile.attendance_day_2 && (
-										<div className="flex flex-col gap-2 min-w-[180px]">
-											<span className="text-xl text-[#282828] font-bold">
-												Day 2
-											</span>
-											<span className="text-2xl text-[#282828]">
-												{userProfile.attendance_day_2_at
-													? new Date(
-															userProfile.attendance_day_2_at,
-														).toLocaleString()
-													: "Checked in"}
-											</span>
-										</div>
-									)}
-								</div>
-							</div>
-						)}
-
-						{/* Divider */}
-						{(userProfile.attendance_day_1 || userProfile.attendance_day_2) && (
-							<div className="h-[1px] bg-[#282828] mx-8 lg:mx-14" />
-						)}
-
 						{/* Social Media */}
 						<div className="px-8 lg:px-14 py-8">
 							<h2 className="text-[34px] font-bold text-[#282828] mb-6">
@@ -331,6 +297,25 @@ export const DashboardSection = ({
 								</div>
 							</div>
 						</div>
+
+						{/* Attendance */}
+						<div className="px-8 lg:px-14 py-8 border-t-2 border-[#282828]">
+							<h2 className="text-[34px] font-bold text-[#282828] mb-6">
+								Attendance
+							</h2>
+							<div className="flex flex-wrap gap-6 md:gap-10">
+								<AttendanceRow
+									day="Day 1"
+									checked={userProfile.attendance_day_1 ?? false}
+									checkedAt={userProfile.attendance_day_1_at}
+								/>
+								<AttendanceRow
+									day="Day 2"
+									checked={userProfile.attendance_day_2 ?? false}
+									checkedAt={userProfile.attendance_day_2_at}
+								/>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -354,6 +339,37 @@ export const DashboardSection = ({
 		</div>
 	);
 };
+
+function AttendanceRow({
+	day,
+	checked,
+	checkedAt,
+}: {
+	day: string;
+	checked: boolean;
+	checkedAt: string | null;
+}) {
+	return (
+		<Checkbox
+			id={`attendance_${day.toLowerCase().replace(" ", "_")}`}
+			name={`attendance_${day.toLowerCase().replace(" ", "_")}`}
+			label={
+				<span>
+					{day}
+					{checkedAt && (
+						<span className="ml-2 text-sm text-gray-500">
+							({new Date(checkedAt).toLocaleString()})
+						</span>
+					)}
+				</span>
+			}
+			value={checked}
+			onChange={() => {}}
+			disabled
+			labelClassName="text-lg text-[#282828]"
+		/>
+	);
+}
 
 function InfoCard({
 	icon,
