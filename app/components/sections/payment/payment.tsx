@@ -1,8 +1,8 @@
 import type { Route } from ".react-router/types/app/routes/auth/+types/payment";
 import { Eye } from "lucide-react";
 import { Link } from "react-router";
+import { DashboardMenu } from "~/components/shared/dashboard-menu";
 import { Hero } from "~/components/shared/hero/hero";
-import { TicketDashboardSwitch } from "~/components/shared/ticket-dashboard-switch";
 
 const statusColorMap: Record<string, string> = {
 	success: "#22835F",
@@ -37,7 +37,7 @@ export const PaymentSection = ({
 
 	return (
 		<div className="min-h-[calc(100dvh-120px)]">
-			<Hero text="My Ticket" nav=<TicketDashboardSwitch /> />
+			<Hero text="My Ticket" nav=<DashboardMenu /> />
 
 			<section className="w-full mx-auto px-6 lg:px-12 py-10">
 				<Link
