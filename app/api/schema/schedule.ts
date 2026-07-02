@@ -11,7 +11,7 @@ export const StreamStatusEnum = z.enum([
 
 export const UserSchema = z.object({
 	id: z.string(),
-	username: z.string(),
+	username: z.string().nullable().optional(),
 	first_name: z.string().nullable(),
 	last_name: z.string().nullable(),
 });
@@ -27,8 +27,8 @@ export const SpeakerSchema = z.object({
 	speaker: z.object({
 		id: z.string(),
 		user: UserSchema,
+		speaker_type: SpeakerTypeSchema.nullable(),
 	}),
-	speaker_type: SpeakerTypeSchema.nullable(),
 });
 
 export const SpeakerRoleEnum = z.enum(["Main Speaker", "Co Speaker"]);

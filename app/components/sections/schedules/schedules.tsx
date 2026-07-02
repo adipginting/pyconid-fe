@@ -61,8 +61,14 @@ function sortSpeakersByOrder<T extends { speakers: { order: number }[] }>(
 
 export const SchedulesSection = ({
 	listSchedule,
+	isLoading,
+	isError,
+	error,
 }: {
 	listSchedule: ResultScheduleType;
+	isLoading?: boolean;
+	isError?: boolean;
+	error?: Error | null;
 }) => {
 	const sortedDates = Array.from(
 		new Set(listSchedule.map((item) => item.start.split("T")[0])),
@@ -92,7 +98,28 @@ export const SchedulesSection = ({
 		}
 	}, [sortedDates, selectedDate]);
 
-	if (!listSchedule || listSchedule.length === 0 || !selectedDate) {
+	if (isError) {
+		return (
+			<section className="bg-schedule-page-bg min-h-screen">
+				<Hero text="Schedules" />
+				<div className="container mx-auto px-5 md:px-12 py-16">
+					<p className="text-center text-red-500">
+						Failed to load schedules.
+						{error?.message && (
+							<span className="block text-sm mt-2">{error.message}</span>
+						)}
+					</p>
+				</div>
+			</section>
+		);
+	}
+
+	if (
+		isLoading ||
+		!listSchedule ||
+		listSchedule.length === 0 ||
+		!selectedDate
+	) {
 		return (
 			<section className="bg-schedule-page-bg min-h-screen">
 				<Hero text="Schedules" />
