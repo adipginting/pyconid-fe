@@ -17,7 +17,6 @@ import type {
 	IndustriesSchema,
 	JobsSchema,
 } from "~/api/schema/user_profile";
-import { Footer } from "~/components/layouts/navigation/footer";
 import { Hero } from "~/components/shared/hero/hero";
 import { parseProfileImage } from "~/lib/utils";
 import { useRootLoaderData } from "~/root";
@@ -870,7 +869,6 @@ export const UserProfileSection = ({
 					</div>
 				</form>
 			</div>
-			<Footer />
 		</div>
 	);
 };

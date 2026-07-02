@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { cn } from "~/lib/utils";
 
 export const Checkbox = ({
 	label,
@@ -8,6 +9,7 @@ export const Checkbox = ({
 	onChange,
 	errorMessage,
 	labelClassName,
+	disabled = false,
 }: {
 	label: string | React.ReactNode;
 
@@ -17,6 +19,7 @@ export const Checkbox = ({
 	onChange: (value: boolean) => void;
 	errorMessage?: string;
 	labelClassName?: string;
+	disabled?: boolean;
 }) => {
 	const isChecked = useMemo(() => {
 		return value === true;
@@ -25,15 +28,23 @@ export const Checkbox = ({
 		<>
 			<div className="flex gap-2 items-center">
 				<input
-					className="w-5 h-5"
+					className="w-5 h-5 disabled:opacity-50 disabled:cursor-not-allowed"
 					id={id}
 					name={name}
 					type="checkbox"
 					checked={isChecked}
 					value={isChecked ? "true" : "false"}
+					disabled={disabled}
 					onChange={(e) => onChange(e.target.checked)}
 				/>
-				<span className={labelClassName}>{label}</span>
+				<span
+					className={cn(
+						labelClassName,
+						disabled && "opacity-50 cursor-not-allowed",
+					)}
+				>
+					{label}
+				</span>
 			</div>
 			{errorMessage && <p className="text-sm text-red-500">{errorMessage}</p>}
 		</>
