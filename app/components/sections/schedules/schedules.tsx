@@ -1,23 +1,23 @@
 import { useQuery } from "@tanstack/react-query";
-import { ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getScheduleById } from "~/api/endpoint/.client/schedule";
-import type {
-	ResultScheduleType,
-	ScheduleItemType,
+import {
+	type ResultScheduleType,
+	ScheduleByIdSchema,
+	type ScheduleItemType,
 } from "~/api/schema/schedule";
+import { Hero } from "~/components/shared/hero/hero";
 import { SessionCard } from "./session-card";
 import { SpeakerModal } from "./speaker-modal";
 
 function formatCustomDate(isoString: string) {
-	const newDate = new Date(isoString);
-
-	const day = newDate.toLocaleDateString("en-US", { weekday: "long" });
-	const month = newDate.toLocaleDateString("en-US", { month: "long" });
-	const date = newDate.getDate();
-	const year = newDate.getFullYear();
-
-	return `${day}, ${month} ${date} - ${year}`;
+	const date = new Date(isoString);
+	return date.toLocaleDateString("en-US", {
+		weekday: "long",
+		day: "numeric",
+		month: "long",
+		year: "numeric",
+	});
 }
 
 function getHourMinuteLabel(date: Date): string {
@@ -46,10 +46,29 @@ function groupScheduleByHour(schedules: ResultScheduleType) {
 	return Object.entries(groups);
 }
 
+function sortSpeakersByOrder<T extends { speakers: { order: number }[] }>(
+	item: T,
+): T {
+	return {
+		...item,
+		speakers: [...item.speakers].sort((a, b) => {
+			if (a.order < b.order) return -1;
+			if (a.order > b.order) return 1;
+			return 0;
+		}),
+	};
+}
+
 export const SchedulesSection = ({
 	listSchedule,
+	isLoading,
+	isError,
+	error,
 }: {
 	listSchedule: ResultScheduleType;
+	isLoading?: boolean;
+	isError?: boolean;
+	error?: Error | null;
 }) => {
 	const sortedDates = Array.from(
 		new Set(listSchedule.map((item) => item.start.split("T")[0])),
@@ -57,19 +76,18 @@ export const SchedulesSection = ({
 
 	const [open, setOpen] = useState(false);
 	const [selectedDate, setSelectedDate] = useState(sortedDates[0]);
-	const [openDropdown, setOpenDropdown] = useState(false);
 	const [selectedScheduleId, setSelectedScheduleId] = useState<
 		ScheduleItemType["id"] | null
-	>();
+	>(null);
 
 	const detailSchedule = useQuery({
 		queryKey: ["detailSchedule", selectedScheduleId],
 		queryFn: async () => {
 			const res = await getScheduleById({ id: selectedScheduleId || "" });
 			const data = await res.json();
-
+			const parsed = await ScheduleByIdSchema.parseAsync(data);
 			setOpen(true);
-			return data;
+			return parsed;
 		},
 		enabled: !!selectedScheduleId,
 	});
@@ -80,44 +98,52 @@ export const SchedulesSection = ({
 		}
 	}, [sortedDates, selectedDate]);
 
-	if (!listSchedule || listSchedule.length === 0 || !selectedDate) {
+	if (isError) {
 		return (
-			<section className="bg-[#F1F1F1] pb-5 overflow-hidden h-full">
-				<div className="z-10 relative mx-5 container md:mx-auto">
-					<div className="pt-[14vh] md:pt-[23vh]">
-						<div className="md:px-4 flex flex-col">
-							<h1 className="text-blue-900 md:px-8 py-4 font-display text-2xl md:text-4xl font-extrabold md:text-center">
-								Schedules
-							</h1>
-							<p className="text-center text-gray-600">Loading schedules...</p>
-						</div>
-					</div>
+			<section className="bg-schedule-page-bg min-h-screen">
+				<Hero text="Schedules" />
+				<div className="container mx-auto px-5 md:px-12 py-16">
+					<p className="text-center text-red-500">
+						Failed to load schedules.
+						{error?.message && (
+							<span className="block text-sm mt-2">{error.message}</span>
+						)}
+					</p>
 				</div>
 			</section>
 		);
 	}
 
-	const filteredSchedule = listSchedule.filter((item) =>
-		item.start.startsWith(selectedDate),
-	);
+	if (
+		isLoading ||
+		!listSchedule ||
+		listSchedule.length === 0 ||
+		!selectedDate
+	) {
+		return (
+			<section className="bg-schedule-page-bg min-h-screen">
+				<Hero text="Schedules" />
+				<div className="container mx-auto px-5 md:px-12 py-16">
+					<p className="text-center text-schedule-muted-text">
+						Loading schedules...
+					</p>
+				</div>
+			</section>
+		);
+	}
+
+	const filteredSchedule = listSchedule
+		.filter((item) => item.start.startsWith(selectedDate))
+		.map(sortSpeakersByOrder);
 
 	const schedulesByHour = groupScheduleByHour(filteredSchedule);
 
 	return (
-		<section className="bg-[#F1F1F1] pb-5 overflow-hidden h-full">
-			<img
-				src="/svg/wing-decoration-orange.svg"
-				className="hidden lg:inline-block absolute z-0 top-[130px] w-14 md:w-20 lg:w-auto right-0"
-				alt=""
-			/>
-			<img
-				src="/svg/wing-decoration-blue.svg"
-				className="hidden lg:inline-block absolute z-0 top-[600px] lg:top-[800px] w-14 md:w-20 lg:w-auto left-0"
-				alt=""
-			/>
-
+		<section className="bg-schedule-page-bg min-h-screen">
 			<SpeakerModal
-				scheduleDetail={detailSchedule.data}
+				scheduleDetail={
+					detailSchedule.data ? sortSpeakersByOrder(detailSchedule.data) : null
+				}
 				isOpen={detailSchedule.data ? open : false}
 				onClose={() => {
 					setOpen(false);
@@ -125,81 +151,56 @@ export const SchedulesSection = ({
 				}}
 			/>
 
-			<div className="z-10 relative mx-5 container md:mx-auto">
-				<div className="pt-[14vh] md:pt-[23vh]">
-					<div className="md:px-4 flex flex-col">
-						<h1 className="text-blue-900 md:px-8 py-4 font-display text-2xl md:text-4xl font-extrabold md:text-center">
-							Schedules
-						</h1>
-					</div>
-				</div>
-			</div>
-
-			<div className="bg-[url('/svg/logo-bg.svg')] bg-center bg-fixed bg-no-repeat md:bg-none md:bg-white z-10 relative container px-5 md:mx-auto md:p-4 rounded md:shadow-md">
-				<div className="flex justify-between mb-2 items-center border-b pb-4 border-[#2B2B2B26]">
-					<div>
-						<p className="text-base font-semibold">
-							{formatCustomDate(selectedDate)}
-						</p>
-					</div>
-					<div className="relative">
-						<button
-							type="button"
-							onClick={() => setOpenDropdown(!openDropdown)}
-							className="bg-[#CDDCFF] py-2 px-4 text-base flex items-center rounded-lg"
-						>
-							{`Day ${sortedDates.indexOf(selectedDate) + 1}`}
-							<ChevronDown className="ml-2" />
-						</button>
-
-						{openDropdown && (
-							<div className="absolute right-0 mt-2 w-26 bg-white rounded-md border z-20">
-								{sortedDates.map((date, idx) => (
-									<button
-										type="button"
-										key={date}
-										onClick={() => {
-											setSelectedDate(date);
-											setOpenDropdown(false);
-										}}
-										className={`block w-full px-4 py-2 cursor-pointer hover:bg-gray-100 ${
-											date === selectedDate ? "bg-gray-100 font-semibold" : ""
-										}`}
-									>
-										{`Day ${idx + 1}`}
-									</button>
-								))}
-							</div>
-						)}
-					</div>
-				</div>
-
-				{schedulesByHour.map(([time, items]) => (
-					<div
-						key={time}
-						className="border-b border-[#2B2B2B26] md:px-4 pt-3.5 pb-8 grid grid-cols-1 md:grid-cols-12"
-					>
-						<div className="col-span-2 hidden md:inline-block">
-							<p className="text-[#224083] font-bold text-2xl">{time}</p>
+			<Hero text="Schedules" />
+			<div className="container mx-auto px-5 md:px-12 py-10 md:py-20">
+				<div className="flex flex-col items-center gap-8 md:gap-10">
+					{sortedDates.length > 1 && (
+						<div className="inline-flex items-center bg-schedule-time-pill-bg p-2">
+							{sortedDates.map((date, idx) => (
+								<button
+									type="button"
+									key={date}
+									onClick={() => setSelectedDate(date)}
+									className={`px-10 py-3 text-base font-bold transition-colors cursor-pointer ${
+										date === selectedDate
+											? "bg-schedule-surface text-schedule-card-bg"
+											: "text-schedule-heading-dark hover:bg-schedule-card-border"
+									}`}
+								>
+									{`Day ${idx + 1}`}
+								</button>
+							))}
 						</div>
-						<ul className="col-span-10 grid md:grid-cols-2 gap-8">
-							{items
-								.sort((s1, s2) => s1.room.name.localeCompare(s2.room.name))
-								.map((session) => (
-									<li key={session.id}>
-										<SessionCard
-											onClick={() => {
-												setSelectedScheduleId(session.id);
-											}}
-											data={session}
-											time={time}
-										/>
-									</li>
-								))}
-						</ul>
-						<div className="col-span-5"></div>
+					)}
+
+					<h2 className="text-schedule-heading-dark font-sans text-2xl font-bold text-start">
+						{formatCustomDate(selectedDate)}
+					</h2>
+					<div className="w-full flex flex-col gap-10 md:gap-12">
+						{schedulesByHour.map(([time, items]) => (
+							<div key={time} className="flex flex-col gap-4">
+								<div className="bg-schedule-time-pill-bg px-5 py-2 text-schedule-heading-dark font-bold text-lg text-start">
+									{time}
+								</div>
+
+								<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+									{items
+										.sort((s1, s2) => s1.room.name.localeCompare(s2.room.name))
+										.map((session) => (
+											<li key={session.id}>
+												<SessionCard
+													onClick={() => {
+														setSelectedScheduleId(session.id);
+													}}
+													data={session}
+												/>
+											</li>
+										))}
+								</ul>
+							</div>
+						))}
 					</div>
-				))}
+				</div>
 			</div>
 		</section>
 	);

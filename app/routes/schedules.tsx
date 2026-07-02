@@ -28,8 +28,12 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 export default function Schedules({ loaderData }: Route.ComponentProps) {
 	const { page, page_size, search, schedule_date, all } = loaderData;
 
-	// 1. Fetch schedule utama
-	const { data: dataSchedule } = useQuery({
+	const {
+		data: dataSchedule,
+		isLoading,
+		isError,
+		error,
+	} = useQuery({
 		queryKey: ["schedule", page, page_size, search, schedule_date, all],
 		queryFn: async () => {
 			const res = await getSchedule({
@@ -44,10 +48,17 @@ export default function Schedules({ loaderData }: Route.ComponentProps) {
 		},
 	});
 
+	const listSchedule = dataSchedule?.results || [];
+
 	return (
 		<main>
 			<Header />
-			<SchedulesSection listSchedule={dataSchedule?.results || []} />
+			<SchedulesSection
+				listSchedule={listSchedule}
+				isLoading={isLoading}
+				isError={isError}
+				error={error}
+			/>
 			<Footer />
 		</main>
 	);
