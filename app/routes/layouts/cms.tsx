@@ -144,6 +144,11 @@ export default function CMSHomePage() {
 						<Link to="/cms/volunteer">Volunteer</Link>
 					</li>
 					<li
+						className={twMerge("underline", path === "user" ? "font-bold" : "")}
+					>
+						<Link to="/cms/user">User QR</Link>
+					</li>
+					<li
 						className={twMerge(
 							"underline",
 							path === "schedule" ? "font-bold" : "",
