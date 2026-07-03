@@ -146,20 +146,35 @@ export const getScheduleCmsResultResponse = z.array(
 	z.object({
 		id: z.string(),
 		title: z.string(),
-		speaker: z
-			.object({
-				id: z.string(),
-				user: z.object({
-					id: z.string(),
-					username: z.string(),
-					first_name: z.string(),
-					last_name: z.string(),
+		speakers: z
+			.array(
+				z.object({
+					order: z.number(),
+					type: z.string(),
+					speaker: z.object({
+						id: z.string(),
+						user: z.object({
+							id: z.string(),
+							first_name: z.string().nullable(),
+							last_name: z.string().nullable(),
+							email: z.string().nullable(),
+							bio: z.string().nullable(),
+							company: z.string().nullable(),
+							job_category: z.string().nullable(),
+							job_title: z.string().nullable(),
+							website: z.string().nullable(),
+							facebook_username: z.string().nullable(),
+							linkedin_username: z.string().nullable(),
+							twitter_username: z.string().nullable(),
+							instagram_username: z.string().nullable(),
+						}),
+						speaker_type: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+					}),
 				}),
-				speaker_type: z.object({
-					id: z.string(),
-					name: z.string(),
-				}),
-			})
+			)
 			.nullable(),
 		room: z.object({
 			id: z.string(),

@@ -1,6 +1,20 @@
 import { Form, Link, useNavigation } from "react-router";
 import type { getScheduleCmsResultResponseType } from "~/api/schema/schedule";
 
+function formatSpeakerNames(
+	speakers: getScheduleCmsResultResponseType[number]["speakers"],
+) {
+	return (
+		speakers?.map(({ speaker }) => {
+			const firstName = speaker.user.first_name ?? "";
+			const lastName = speaker.user.last_name ?? "";
+			const fullName = `${firstName} ${lastName}`.trim();
+
+			return fullName || speaker.user.email || speaker.id;
+		}) ?? []
+	);
+}
+
 export const Table = ({ data }: { data: getScheduleCmsResultResponseType }) => {
 	const navigation = useNavigation();
 
@@ -63,11 +77,20 @@ export const Table = ({ data }: { data: getScheduleCmsResultResponseType }) => {
 						</td>
 						<td className="px-4 py-2">{schedule.title}</td>
 						<td className="px-4 py-2">
-							{schedule.speaker?.user.first_name ?? ""}{" "}
-							{schedule.speaker?.user.last_name ?? ""}{" "}
-							{schedule.speaker?.user.username
-								? `(${schedule.speaker?.user.username})`
-								: ""}
+							<div className="flex flex-wrap gap-2">
+								{formatSpeakerNames(schedule.speakers).length > 0 ? (
+									formatSpeakerNames(schedule.speakers).map((speakerName) => (
+										<span
+											key={`${schedule.id}-${speakerName}`}
+											className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-700"
+										>
+											{speakerName}
+										</span>
+									))
+								) : (
+									<span className="text-gray-500">-</span>
+								)}
+							</div>
 						</td>
 						<td className="px-4 py-2">{schedule.room.name ?? "-"}</td>
 						<td className="px-4 py-2">{schedule.schedule_type?.name ?? "-"}</td>
