@@ -8,7 +8,12 @@ type Props = {
 
 export const Hero = ({ text, nav, className }: Props) => {
 	return (
-		<section className={cn("relative bg-surface overflow-hidden pt-32 pb-16 lg:pt-44 lg:pb-32", className)}>
+		<section
+			className={cn(
+				"relative bg-surface overflow-hidden pt-32 pb-16 lg:pt-44 lg:pb-32",
+				className,
+			)}
+		>
 			{/* Decorative Ellipse */}
 			<div className="absolute -right-25 top-[125px] w-[522px] h-[522px] rounded-full border-[75px] border-[#909090] opacity-20" />
 			{nav ? <div>{nav}</div> : null}

@@ -139,21 +139,21 @@ export const SpeakersSection = ({ speakers }: SpeakersSectionProps) => {
 					>
 						<div className="mb-16 relative w-max mx-auto z-10 text-center">
 							<div className="absolute w-26 -left-28 -top-20 text-surface/30 hidden md:block select-none text-4xl">
-							<img
-								src="/svg/accent-2.svg"
-								alt=""
-								className="w-full h-auto rotate-90"
-								aria-hidden="true"
-							/>
-						</div>
-						<div className="absolute w-26 -right-40 -bottom-12 text-surface/30 hidden md:block select-none text-4xl">
-							<img
-								src="/svg/accent-2.svg"
-								alt=""
-								className="w-full h-auto rotate-90"
-								aria-hidden="true"
-							/>
-						</div>
+								<img
+									src="/svg/accent-2.svg"
+									alt=""
+									className="w-full h-auto rotate-90"
+									aria-hidden="true"
+								/>
+							</div>
+							<div className="absolute w-26 -right-40 -bottom-12 text-surface/30 hidden md:block select-none text-4xl">
+								<img
+									src="/svg/accent-2.svg"
+									alt=""
+									className="w-full h-auto rotate-90"
+									aria-hidden="true"
+								/>
+							</div>
 
 							<h2 className="font-sans relative text-3xl md:text-4xl lg:text-5xl font-black uppercase">
 								<span className="text-gray-400 mr-3">{organizer.name}</span>
