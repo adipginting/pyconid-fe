@@ -1,11 +1,14 @@
+import { cn } from "~/lib/utils";
+
 type Props = {
 	text: string;
 	nav?: React.ReactNode;
+	className?: string;
 };
 
-export const Hero = ({ text, nav }: Props) => {
+export const Hero = ({ text, nav, className }: Props) => {
 	return (
-		<section className="relative bg-[#282828] overflow-hidden">
+		<section className={cn("relative bg-surface overflow-hidden pt-32 pb-16 lg:pt-44 lg:pb-32", className)}>
 			{/* Decorative Ellipse */}
 			<div className="absolute -right-25 top-[125px] w-[522px] h-[522px] rounded-full border-[75px] border-[#909090] opacity-20" />
 			{nav ? <div>{nav}</div> : null}
@@ -36,7 +39,7 @@ export const Hero = ({ text, nav }: Props) => {
 				/>
 			</div>
 
-			<div className="px-6 lg:px-12 pt-[120px] pb-16 lg:pt-[160px] lg:pb-24 relative z-10">
+			<div className="container mx-auto px-6 lg:px-12 relative z-10">
 				<div className="flex justify-between items-start">
 					<h1 className="text-[#F1F2F3] text-4xl md:text-5xl lg:text-[60px] font-bold font-sans tracking-tight max-w-[600px]">
 						{text}
