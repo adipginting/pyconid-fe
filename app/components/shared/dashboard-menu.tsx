@@ -3,6 +3,7 @@ import { NavLink } from "react-router";
 
 type DashboardMenuProps = {
 	showCheckIn?: boolean;
+	showCms?: boolean;
 };
 
 const tabClassName =
@@ -43,7 +44,10 @@ function TabContent({
 	);
 }
 
-export const DashboardMenu = ({ showCheckIn = false }: DashboardMenuProps) => {
+export const DashboardMenu = ({
+	showCheckIn = false,
+	showCms = false,
+}: DashboardMenuProps) => {
 	return (
 		<div className="flex items-center gap-4 px-6 lg:px-12 pt-6 absolute top-15 lg:top-20 left-0 right-0 z-20">
 			<NavLink
@@ -89,6 +93,18 @@ export const DashboardMenu = ({ showCheckIn = false }: DashboardMenuProps) => {
 							isActive={isActive}
 							icon={<ScanLine className="w-5 h-5" />}
 							label="Check In"
+						/>
+					)}
+				</NavLink>
+			)}
+
+			{showCms && (
+				<NavLink to="/cms" className={tabClassName} style={{ clipPath }}>
+					{({ isActive }) => (
+						<TabContent
+							isActive={isActive}
+							icon={<ScanLine className="w-5 h-5" />}
+							label="CMS"
 						/>
 					)}
 				</NavLink>

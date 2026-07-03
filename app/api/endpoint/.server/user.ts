@@ -39,3 +39,13 @@ export const getDetailUserForQr = async ({
 }) => {
 	return await http.get(`/user/${user_id}/qr/`, { request });
 };
+
+export const getDetailUser = async ({
+	request,
+	user_id,
+}: {
+	request: Request;
+	user_id: string;
+}) => {
+	return await http.get(`/user/${user_id}`, { request });
+};
