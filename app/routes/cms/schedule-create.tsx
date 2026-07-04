@@ -34,7 +34,8 @@ function getSpeakerFieldError(
 	return (
 		errors
 			?.filter(
-				(item) => item.field === "speaker_id" || item.field.startsWith("speakers"),
+				(item) =>
+					item.field === "speaker_id" || item.field.startsWith("speakers"),
 			)
 			.map((item) => item.message)
 			.join(", ") || undefined

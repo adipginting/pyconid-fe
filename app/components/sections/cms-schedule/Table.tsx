@@ -9,15 +9,15 @@ function formatSpeakers(
 			?.slice()
 			.sort((a, b) => a.order - b.order)
 			.map(({ speaker, type }) => {
-			const firstName = speaker.user.first_name ?? "";
-			const lastName = speaker.user.last_name ?? "";
-			const fullName = `${firstName} ${lastName}`.trim();
+				const firstName = speaker.user.first_name ?? "";
+				const lastName = speaker.user.last_name ?? "";
+				const fullName = `${firstName} ${lastName}`.trim();
 
-			return {
-				name: fullName || speaker.user.email || speaker.id,
-				type,
-			};
-		}) ?? []
+				return {
+					name: fullName || speaker.user.email || speaker.id,
+					type,
+				};
+			}) ?? []
 	);
 }
 
