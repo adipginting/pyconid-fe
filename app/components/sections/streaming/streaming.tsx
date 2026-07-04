@@ -22,6 +22,7 @@ export const StreamingSection = ({
 	const scheduleDetail = componentProps.loaderData.scheduleDetail;
 	const scheduleStream = componentProps.loaderData.scheduleStream;
 	const streamId = scheduleStream.stream_id;
+	const primarySpeaker = scheduleDetail.speakers?.[0]?.speaker ?? null;
 
 	const playerRef = useRef<MuxPlayerElement>(null);
 	const heartbeatTimerRef = useRef<number | null>(null);
@@ -29,7 +30,7 @@ export const StreamingSection = ({
 	const watchSessionIdRef = useRef<string | null>(null);
 	const isStartingRef = useRef(false);
 
-	const speakerBio = scheduleDetail.speaker?.user.bio ?? "";
+	const speakerBio = primarySpeaker?.user.bio ?? "";
 
 	const getCurrentPosition = useCallback(() => {
 		return Number(playerRef.current?.currentTime ?? 0);
@@ -173,16 +174,16 @@ export const StreamingSection = ({
 		setSpeakerBioExpansion((prev) => !prev);
 
 	const doesSocialMediaExist =
-		scheduleDetail.speaker?.user.instagram_username ||
-		scheduleDetail.speaker?.user.facebook_username ||
-		scheduleDetail.speaker?.user.email;
+		primarySpeaker?.user.instagram_username ||
+		primarySpeaker?.user.facebook_username ||
+		primarySpeaker?.user.email;
 
-	const first_name = scheduleDetail.speaker?.user.first_name;
-	const last_name = scheduleDetail.speaker?.user.last_name;
+	const first_name = primarySpeaker?.user.first_name;
+	const last_name = primarySpeaker?.user.last_name;
 
 	useEffect(() => {
-		if (scheduleDetail.speaker?.id) {
-			const imageUrl = parseSpeakerImage({ id: scheduleDetail.speaker.id });
+		if (primarySpeaker?.id) {
+			const imageUrl = parseSpeakerImage({ id: primarySpeaker.id });
 			const img = new Image();
 
 			img.onload = () => {
@@ -196,7 +197,7 @@ export const StreamingSection = ({
 
 			img.src = imageUrl;
 		}
-	}, [scheduleDetail.speaker?.id]);
+	}, [primarySpeaker?.id]);
 
 	return (
 		<section className="bg-[#F1F1F1] p-5">
@@ -245,7 +246,7 @@ export const StreamingSection = ({
 						</div>
 						<div className="flex flex-col rounded-md shadow-[6px_6px_12px_rgba(0,0,0,0.2)] p-3">
 							<div className="flex items-center justify-between">
-								{scheduleDetail.speaker?.user ? (
+								{primarySpeaker?.user ? (
 									<div className="flex items-center gap-x-5">
 										<img
 											src={speakerImageSrc}
@@ -261,10 +262,10 @@ export const StreamingSection = ({
 													</span>
 												</p>
 											</div>
-											{scheduleDetail.speaker?.user.job_title && (
+											{primarySpeaker?.user.job_title && (
 												<p>
-													{scheduleDetail.speaker?.user.job_title} at{" "}
-													{scheduleDetail.speaker?.user.company}
+													{primarySpeaker?.user.job_title} at{" "}
+													{primarySpeaker?.user.company}
 												</p>
 											)}
 										</div>
@@ -321,7 +322,7 @@ export const StreamingSection = ({
 								) : null}
 							</div>
 						</div>
-						{scheduleDetail.speaker?.user ? (
+						{primarySpeaker?.user ? (
 							<div className="flex md:flex-row md:gap-y-0 gap-y-5 flex-col gap-x-5 bg-[#F37F20] p-6 rounded-md">
 								<img
 									src={speakerImageSrc}
@@ -329,11 +330,11 @@ export const StreamingSection = ({
 									className="w-30 h-40 md:w-60 md:h-80 rounded-md object-cover"
 								/>
 								<div className="flex flex-col font-sans text-white">
-									<p className="font-bold text-lg md:text-4xl">{`${scheduleDetail.speaker?.user.first_name} ${scheduleDetail.speaker?.user.last_name}`}</p>
-									{scheduleDetail.speaker?.user.job_title ? (
+									<p className="font-bold text-lg md:text-4xl">{`${primarySpeaker?.user.first_name} ${primarySpeaker?.user.last_name}`}</p>
+									{primarySpeaker?.user.job_title ? (
 										<p className="font-semibold text-base">
-											{scheduleDetail.speaker?.user.job_title} at{" "}
-											{scheduleDetail.speaker?.user.company}
+											{primarySpeaker?.user.job_title} at{" "}
+											{primarySpeaker?.user.company}
 										</p>
 									) : null}
 
@@ -371,9 +372,9 @@ export const StreamingSection = ({
 										<div className="flex flex-col items-start gap-y-1">
 											<p className="font-semibold text-xl mt-3">Social Media</p>
 											<div className="flex items-center justify-center">
-												{scheduleDetail.speaker?.user.instagram_username && (
+												{primarySpeaker?.user.instagram_username && (
 													<a
-														href={`https://instagram.com/${scheduleDetail.speaker?.user.instagram_username}`}
+														href={`https://instagram.com/${primarySpeaker?.user.instagram_username}`}
 														target="_blank"
 														rel="noreferrer noopener"
 													>
@@ -384,9 +385,9 @@ export const StreamingSection = ({
 														/>
 													</a>
 												)}
-												{scheduleDetail.speaker?.user.email && (
+												{primarySpeaker?.user.email && (
 													<a
-														href={`mailto:${scheduleDetail.speaker?.user.email}`}
+														href={`mailto:${primarySpeaker?.user.email}`}
 														target="_blank"
 														rel="noreferrer noopener"
 													>
@@ -397,9 +398,9 @@ export const StreamingSection = ({
 														/>
 													</a>
 												)}
-												{scheduleDetail.speaker?.user.twitter_username && (
+												{primarySpeaker?.user.twitter_username && (
 													<a
-														href={`https://x.com/${scheduleDetail.speaker?.user.twitter_username}`}
+														href={`https://x.com/${primarySpeaker?.user.twitter_username}`}
 														target="_blank"
 														rel="noreferrer noopener"
 													>
