@@ -34,8 +34,10 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 		});
 	}
 
+	const listScheduleData = await listScheduleRes.json();
+
 	return {
-		listSchedule: getScheduleCmsResponse.parse(await listScheduleRes.json()),
+		listSchedule: getScheduleCmsResponse.parse(listScheduleData),
 		search: searchParams.get("search") || null,
 	};
 };
