@@ -3,7 +3,6 @@ import { getPayment } from "~/api/endpoint/.server/payment";
 import { getUserTicket } from "~/api/endpoint/.server/user_ticket";
 import { paymentResponseSchema } from "~/api/schema/payment";
 import { userTicketResponseSchema } from "~/api/schema/user_ticket";
-import { Main as MainLayout } from "~/components/layouts/app/main";
 import { Footer } from "~/components/layouts/navigation/footer";
 import { UserTicketSection } from "~/components/sections/user-ticket";
 import { authenticator } from "~/services/auth/$.server";
@@ -42,9 +41,9 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
 export default function TicketDetail(componentProps: Route.ComponentProps) {
 	return (
-		<MainLayout className="bg-[#FAF9F7]" contentClassName="!pt-0">
+		<main className="bg-[#FAF9F7]">
 			<UserTicketSection componentProps={componentProps} />
 			<Footer />
-		</MainLayout>
+		</main>
 	);
 }

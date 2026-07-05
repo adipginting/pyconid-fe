@@ -122,6 +122,14 @@ export default function CMSHomePage() {
 					<li
 						className={twMerge(
 							"underline",
+							path === "organizer" ? "font-bold" : "",
+						)}
+					>
+						<Link to="/cms/organizer">Organizer</Link>
+					</li>
+					<li
+						className={twMerge(
+							"underline",
 							path === "speaker" ? "font-bold" : "",
 						)}
 					>
@@ -134,6 +142,11 @@ export default function CMSHomePage() {
 						)}
 					>
 						<Link to="/cms/volunteer">Volunteer</Link>
+					</li>
+					<li
+						className={twMerge("underline", path === "user" ? "font-bold" : "")}
+					>
+						<Link to="/cms/user">User QR</Link>
 					</li>
 					<li
 						className={twMerge(

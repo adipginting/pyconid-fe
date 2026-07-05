@@ -14,7 +14,7 @@ import {
 	participantTypeSchema,
 	updateUserProfileSchema,
 } from "~/api/schema/user_profile";
-import { Main as MainLayout } from "~/components/layouts/app/main";
+import { Footer } from "~/components/layouts/navigation/footer";
 import { UserProfileSection } from "~/components/sections/user-profile/user-profile";
 import { authenticator } from "~/services/auth/$.server";
 import type { Route } from "./+types/user-profile";
@@ -212,13 +212,14 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
 export default function UserProfilePage(componentProps: Route.ComponentProps) {
 	return (
-		<MainLayout className="bg-[#FAF9F7]" contentClassName="!pt-0">
+		<main className="bg-[#FAF9F7]">
 			<UserProfileSection
 				userProfile={componentProps.loaderData.userProfile}
 				industries={componentProps.loaderData.industries}
 				jobs={componentProps.loaderData.jobs}
 				actionData={componentProps.actionData}
 			/>
-		</MainLayout>
+			<Footer />
+		</main>
 	);
 }

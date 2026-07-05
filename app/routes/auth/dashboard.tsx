@@ -3,7 +3,8 @@ import { getMe } from "~/api/endpoint/.server/auth";
 import { getUserProfile } from "~/api/endpoint/.server/user_profile";
 import { meSchema } from "~/api/schema/auth";
 import { getUserProfileSchema } from "~/api/schema/user_profile";
-import { Main as MainLayout } from "~/components/layouts/app/main";
+import { Footer } from "~/components/layouts/navigation/footer";
+import { Header } from "~/components/layouts/navigation/header";
 import { DashboardSection } from "~/components/sections/dashboard/dashboard";
 import { authenticator } from "~/services/auth/$.server";
 import type { Route } from "./+types/dashboard";
@@ -61,11 +62,13 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
 export default function DashboardPage(componentProps: Route.ComponentProps) {
 	return (
-		<MainLayout className="bg-[#FAF9F7]" contentClassName="!pt-0">
+		<main className="bg-[#FAF9F7]">
+			<Header />
 			<DashboardSection
 				userProfile={componentProps.loaderData.userProfile}
 				me={componentProps.loaderData.me}
 			/>
-		</MainLayout>
+			<Footer />
+		</main>
 	);
 }

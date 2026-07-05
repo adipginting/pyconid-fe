@@ -1,8 +1,8 @@
 import { redirect } from "react-router";
 import { getPayment } from "~/api/endpoint/.server/payment";
 import { paymentResponseSchema } from "~/api/schema/payment";
-import { Main as MainLayout } from "~/components/layouts/app/main";
 import { Footer } from "~/components/layouts/navigation/footer";
+import { Header } from "~/components/layouts/navigation/header";
 import { PaymentSection } from "~/components/sections/payment/payment";
 import { authenticator } from "~/services/auth/$.server";
 import type { Route } from "./+types/payment";
@@ -33,9 +33,10 @@ export default function TicketPaymentPage(
 	componentProps: Route.ComponentProps,
 ) {
 	return (
-		<MainLayout className="bg-[#FAF9F7]" contentClassName="!pt-0">
+		<main className="bg-[#FAF9F7]">
+			<Header />
 			<PaymentSection componentProps={componentProps} />
 			<Footer />
-		</MainLayout>
+		</main>
 	);
 }

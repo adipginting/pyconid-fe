@@ -1,6 +1,8 @@
 import { z } from "zod";
 
 export const streamingResponseSchema = z.object({
+	stream_id: z.string(),
+	schedule_id: z.string(),
 	playback: z.object({
 		id: z.string(),
 		url: z.string(),

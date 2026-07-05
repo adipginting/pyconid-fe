@@ -7,8 +7,10 @@ export default function CMSHomePage() {
 			<ul style={{ listStyle: "none", padding: 0 }}>
 				{[
 					{ to: "/cms/voucher", label: "Voucher" },
+					{ to: "/cms/organizer", label: "Organizer" },
 					{ to: "/cms/speaker", label: "Speaker" },
 					{ to: "/cms/volunteer", label: "Volunteer" },
+					{ to: "/cms/user", label: "User QR" },
 					{ to: "/cms/schedule", label: "Schedule" },
 				].map(({ to, label }) => (
 					<li key={to} style={{ marginBottom: "8px" }}>

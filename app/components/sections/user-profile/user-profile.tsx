@@ -17,7 +17,6 @@ import type {
 	IndustriesSchema,
 	JobsSchema,
 } from "~/api/schema/user_profile";
-import { Footer } from "~/components/layouts/navigation/footer";
 import { Hero } from "~/components/shared/hero/hero";
 import { parseProfileImage } from "~/lib/utils";
 import { useRootLoaderData } from "~/root";
@@ -705,7 +704,7 @@ export const UserProfileSection = ({
 									label="Github Username"
 									id="github_username"
 									name="github_username"
-									placeholder="github-username"
+									placeholder="Github Username"
 									defaultValue={userProfile.github_username || ""}
 									inputClassName="border-[#282828]"
 								/>
@@ -715,7 +714,7 @@ export const UserProfileSection = ({
 									label="Facebook Username"
 									id="facebook_username"
 									name="facebook_username"
-									placeholder="facebook-username"
+									placeholder="Facebook Username"
 									defaultValue={userProfile.facebook_username || ""}
 									inputClassName="border-[#282828]"
 								/>
@@ -723,7 +722,7 @@ export const UserProfileSection = ({
 									label="LinkedIn Username"
 									id="linkedin_username"
 									name="linkedin_username"
-									placeholder="linkedin-username"
+									placeholder="Linkedin Username"
 									defaultValue={userProfile.linkedin_username || ""}
 									inputClassName="border-[#282828]"
 								/>
@@ -733,7 +732,7 @@ export const UserProfileSection = ({
 									label="X/Twitter Username"
 									id="twitter_username"
 									name="twitter_username"
-									placeholder="x-username"
+									placeholder="X/Twitter Username"
 									defaultValue={userProfile.twitter_username || ""}
 									inputClassName="border-[#282828]"
 								/>
@@ -741,7 +740,7 @@ export const UserProfileSection = ({
 									label="Instagram Username"
 									id="instagram_username"
 									name="instagram_username"
-									placeholder="instagram-username"
+									placeholder="Instagram Username"
 									defaultValue={userProfile.instagram_username || ""}
 									inputClassName="border-[#282828]"
 								/>
@@ -870,7 +869,6 @@ export const UserProfileSection = ({
 					</div>
 				</form>
 			</div>
-			<Footer />
 		</div>
 	);
 };

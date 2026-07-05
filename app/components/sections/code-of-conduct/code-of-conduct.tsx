@@ -3,7 +3,7 @@ import { Hero } from "~/components/shared/hero/hero";
 
 export const CodeOfConductSection: FC = () => (
 	<section className="bg-[#F1F1F1] ">
-		<div className="z-10 relative container m-auto">
+		<div className="z-10 relative">
 			{/* Hero Section */}
 			<Hero text="Code of Conduct" />
 			{/* Content Section */}

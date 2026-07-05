@@ -8,6 +8,7 @@ import {
 	SpeakerCard,
 	type SpeakerCardProps,
 } from "~/components/shared/card/speaker";
+import { Hero } from "~/components/shared/hero/hero";
 import { cn, parseSpeakerImage } from "~/lib/utils";
 
 interface SpeakersSectionProps {
@@ -84,144 +85,106 @@ export const SpeakersSection = ({ speakers }: SpeakersSectionProps) => {
 		return {
 			keynote,
 			talks: [
-				{ name: "Regular Talk Speaker", data: regular },
-				{ name: "Short Talk Speaker", data: short },
+				{ name: "Regular Talk", data: regular },
+				{ name: "Short Talk", data: short },
 			],
 		};
 	}, [speakers, speakers.length]);
 
 	return (
-		<section className="pt-9 sm:pt-36 bg-[#F1F1F1] relative w-full overflow-x-hidden">
-			{/* wing decoretion 1 */}
-			<div className="absolute top-8 right-0">
-				<img
-					src="/svg/wing-decoration-blue.svg"
-					alt=""
-					className="w-10 -scale-x-100 md:w-16 lg:w-auto"
-				/>
-			</div>
-			<div className="absolute rotate-x-180 hidden top-2/12 left-0 md:block">
-				<img
-					src="/svg/wing-decoration-orange.svg"
-					alt=""
-					className="w-10 -scale-x-100 md:w-16 lg:w-auto"
-				/>
-			</div>
-			<div className="absolute rotate-50 -left-30 top-3/12 opacity-50 hidden md:block">
-				<img src="/svg/square-decoration.svg" alt="" width={250} />
-			</div>
+		<section className="bg-background relative w-full overflow-x-hidden min-h-screen">
+			<Hero text="Our Speakers" className="lg:pb-44" />
 
-			{/* wing decoretion 2*/}
-			<div className="absolute top-[44%] rotate-y-180 -left-11">
-				<img
-					src="/svg/wing-decoration-blue.svg"
-					alt=""
-					className="w-10 -scale-x-100 md:w-16 lg:w-auto"
-				/>
-			</div>
-			<div className="absolute hidden top-[32%] -right-12">
-				<img
-					src="/svg/wing-decoration-orange.svg"
-					alt=""
-					className="w-10 md:w-16 lg:w-auto"
-				/>
-			</div>
-
-			{/* wing decoretion 3 */}
-			<div className="absolute top-[82%] -left-11 rotate-y-180">
-				<img
-					src="/svg/wing-decoration-blue.svg"
-					alt=""
-					className="w-10 -scale-x-100 md:w-16 lg:w-auto"
-				/>
-			</div>
-			<div className="absolute hidden top-[70%] -right-12 md:block">
-				<img
-					src="/svg/wing-decoration-orange.svg"
-					alt=""
-					className="w-10 md:w-16 lg:w-auto"
-				/>
-			</div>
-			<div className="absolute rotate-40 -right-30 top-[63%] opacity-50 hidden md:block">
-				<img src="/svg/square-decoration.svg" alt="" width={270} />
-			</div>
-
-			{/* KEYNOTE SPEAKERS SECTION */}
-			<div className="container mx-auto relative">
-				<div className="mb-20 relative w-max mx-auto z-10">
-					{/* square decoration */}
-					<div className="absolute rotate-90 -left-[4.5rem] -bottom-14 hidden md:block">
-						<img src="/svg/square-decoration.svg" alt="" />
-					</div>
-					<div className="absolute rotate-90 -right-20 -top-14 hidden md:block">
-						<img src="/svg/square-decoration.svg" alt="" />
-					</div>
-
-					<h1 className="font-display relative text-center text-3xl md:text-4xl lg:text-[4rem] font-bold text-secondary">
-						KEYNOTE <span className="text-foreground">SPEAKERS</span>
-					</h1>
-				</div>
-
-				<div className="flex justify-center pb-4 px-5 2xl:px-0">
-					<div className="grid grid-cols-1 sm:grid-cols-3 sm:gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-4">
-						{parsedSpeakers.keynote.map((speaker) => (
-							<SpeakerCard key={speaker.id} {...speaker} />
-						))}
-					</div>
-				</div>
-			</div>
-
-			{parsedSpeakers.talks.map((organizer) => (
-				<div key={organizer.name} className="container mx-auto relative pt-40">
-					<div className="mb-20 relative w-max mx-auto z-10">
-						{/* square decoration */}
-						<div className="absolute rotate-0 -left-[-3.5rem] -top-[4.5rem] hidden md:block">
+			<div className="py-20">
+				{/* KEYNOTE SPEAKERS SECTION */}
+				<div className="container mx-auto px-6 lg:px-12 relative mb-24">
+					<div className="mb-16 relative w-max mx-auto z-10 text-center">
+						<div className="absolute w-26 -left-28 -bottom-20 text-surface/30 hidden md:block select-none text-4xl">
 							<img
-								src="/svg/square-decoration.svg"
+								src="/svg/accent-2.svg"
 								alt=""
-								width={85}
-								height={85}
+								className="w-full h-auto rotate-90"
+								aria-hidden="true"
 							/>
 						</div>
-						<div className="absolute rotate-0 -right-[-4.5rem] -bottom-[4.5rem] hidden md:block">
+						<div className="absolute w-26 -right-28 -top-20 text-surface/30 hidden md:block select-none text-4xl">
 							<img
-								src="/svg/square-decoration.svg"
+								src="/svg/accent-2.svg"
 								alt=""
-								width={85}
-								height={85}
+								className="w-full h-auto rotate-90"
+								aria-hidden="true"
 							/>
 						</div>
 
-						<h1 className="font-display relative text-center text-3xl md:text-4xl lg:text-[4rem] font-bold text-foreground uppercase">
-							{organizer.name}
-						</h1>
+						<h2 className="font-sans relative text-3xl md:text-4xl lg:text-5xl font-black uppercase">
+							<span className="text-gray-400 mr-3">Keynote</span>
+							<span className="text-surface">Speakers</span>
+						</h2>
 					</div>
 
-					<div className="px-5 mx-auto md:px-12 lg:px-0">
-						<div
-							className={cn(
-								"grid gap-4 justify-items-center md:gap-12 md:grid-cols-2 lg:gap-6 lg:grid-cols-3 xl:grid-cols-4",
-								organizer.data.length === 1 &&
-									"md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1",
-								organizer.data.length === 2 &&
-									"md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2",
-								organizer.data.length === 3 &&
-									"md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3",
-							)}
-						>
-							{organizer.data.length > 0 ? (
-								organizer.data.map((item) => (
-									<OtherSpeakersCard key={item.id} {...item} />
-								))
-							) : (
-								<div className="col-span-full text-center text-gray-500 py-8 h-[500px] flex items-center justify-center">
-									No {organizer.name} available
-								</div>
-							)}
+					<div className="flex justify-center">
+						<div className="grid grid-cols-1 lg:gap-12 gap-8 w-full max-w-4xl">
+							{parsedSpeakers.keynote.map((speaker) => (
+								<SpeakerCard key={speaker.id} {...speaker} />
+							))}
 						</div>
 					</div>
 				</div>
-			))}
+
+				{/* REGULAR / SHORT TALKS SECTION */}
+				{parsedSpeakers.talks.map((organizer) => (
+					<div
+						key={organizer.name}
+						className="container mx-auto px-6 lg:px-12 relative mb-24"
+					>
+						<div className="mb-16 relative w-max mx-auto z-10 text-center">
+							<div className="absolute w-26 -left-28 -top-20 text-surface/30 hidden md:block select-none text-4xl">
+								<img
+									src="/svg/accent-2.svg"
+									alt=""
+									className="w-full h-auto rotate-90"
+									aria-hidden="true"
+								/>
+							</div>
+							<div className="absolute w-26 -right-40 -bottom-12 text-surface/30 hidden md:block select-none text-4xl">
+								<img
+									src="/svg/accent-2.svg"
+									alt=""
+									className="w-full h-auto rotate-90"
+									aria-hidden="true"
+								/>
+							</div>
+
+							<h2 className="font-sans relative text-3xl md:text-4xl lg:text-5xl font-black uppercase">
+								<span className="text-gray-400 mr-3">{organizer.name}</span>
+								<span className="text-surface">Speakers</span>
+							</h2>
+						</div>
+
+						<div>
+							<div
+								className={cn(
+									"grid gap-8 justify-items-center sm:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl mx-auto",
+									organizer.data.length === 1 &&
+										"sm:grid-cols-1 lg:grid-cols-1",
+									organizer.data.length === 2 &&
+										"sm:grid-cols-2 lg:grid-cols-2 max-w-4xl",
+								)}
+							>
+								{organizer.data.length > 0 ? (
+									organizer.data.map((item) => (
+										<OtherSpeakersCard key={item.id} {...item} />
+									))
+								) : (
+									<div className="col-span-full text-center text-gray-500 py-8 h-[300px] flex items-center justify-center">
+										No {organizer.name} Speakers Available
+									</div>
+								)}
+							</div>
+						</div>
+					</div>
+				))}
+			</div>
 		</section>
 	);
 };
