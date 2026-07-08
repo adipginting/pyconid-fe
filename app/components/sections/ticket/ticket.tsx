@@ -5,6 +5,7 @@ import { EarlyBirdTicketCard } from "~/components/shared/ticket/early-bird-ticke
 import { TicketCard } from "~/components/shared/ticket/ticket-card";
 import { TicketErrorModal } from "~/components/shared/ticket/ticket-error-modal";
 import { TicketPurchaseModal } from "~/components/shared/ticket/ticket-purchase-modal";
+import { usePython } from "~/hooks/usePython";
 import type { CredentialsData } from "~/types/auth";
 
 export const Ticket = ({
@@ -21,6 +22,7 @@ export const Ticket = ({
 	const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
 	const [errorTitle, setErrorTitle] = useState("Unable to purchase ticket");
+	usePython({ pyodideURL: "/assets" });
 
 	const handleSelectTicket = (ticket: TicketType) => {
 		if (!user) {
