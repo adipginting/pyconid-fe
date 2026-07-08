@@ -21,6 +21,7 @@
     "dotenv": "^17.2.3",
     "isbot": "^5.1.32",
     "lucide-react": "^0.542.0",
+    "pyodide": "^314.0.2",
     "qrcode.react": "^4.2.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
