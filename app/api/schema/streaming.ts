@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { StreamStatusEnum } from "./schedule";
 
 export const streamingResponseSchema = z.object({
 	stream_id: z.string(),
@@ -9,13 +10,13 @@ export const streamingResponseSchema = z.object({
 		token: z.string().nullable(),
 	}),
 	thumbnail: z.object({
-		url: z.string(),
+		url: z.string().nullable(),
 		token: z.string().nullable(),
 	}),
 	metadata: z.object({
 		user_id: z.string().nullable(),
 		title: z.string().nullable(),
 	}),
-	status: z.string(),
+	status: StreamStatusEnum,
 	token_expires_at: z.string().nullable(),
 });
