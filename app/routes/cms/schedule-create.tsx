@@ -13,8 +13,8 @@ import { scheduleCreateRequestSchema } from "~/api/schema/schedule";
 import { getScheduleTypeSchema } from "~/api/schema/schedule_type";
 import { clientErrorSchema } from "~/api/schema/shared";
 import { getSpeakerSchema } from "~/api/schema/speaker";
-import { DropdownSearch } from "~/components/sections/cms-schedule/dropdownSearch";
 import { Input } from "~/components/sections/cms-schedule/input";
+import { MultiDropdownSearch } from "~/components/sections/cms-schedule/multiDropdownSearch";
 import { Select } from "~/components/sections/cms-schedule/select";
 import { Textarea } from "~/components/sections/cms-schedule/textarea";
 import {
@@ -22,6 +22,25 @@ import {
 	getMessageSession,
 } from "~/services/sessions/message.server";
 import type { Route } from "./+types/schedule-create";
+
+type SpeakerOption = {
+	label: string;
+	value: string;
+};
+
+function getSpeakerFieldError(
+	errors: { field: string; message: string }[] | undefined,
+) {
+	return (
+		errors
+			?.filter(
+				(item) =>
+					item.field === "speaker_id" || item.field.startsWith("speakers"),
+			)
+			.map((item) => item.message)
+			.join(", ") || undefined
+	);
+}
 
 export const action = async ({ request }: Route.ActionArgs) => {
 	const messageSession = await getMessageSession(request.headers.get("Cookie"));
@@ -31,9 +50,17 @@ export const action = async ({ request }: Route.ActionArgs) => {
 		const str = typeof value === "string" ? value.trim() : "";
 		return str === "" ? null : value;
 	};
+	const speakerIds = formData
+		.getAll("speaker_id")
+		.map((value) => (typeof value === "string" ? value.trim() : ""))
+		.filter((value) => value !== "");
 	const json = {
 		title: getValue(formData.get("title")),
-		speaker_id: getValue(formData.get("speaker_id")),
+		speakers: speakerIds.map((speaker_id, index) => ({
+			speaker_id,
+			order: index + 1,
+			type: index === 0 ? ("Main Speaker" as const) : ("Co Speaker" as const),
+		})),
 		room_id: getValue(formData.get("room_id")),
 		schedule_type_id: getValue(formData.get("schedule_type_id")),
 		description: getValue(formData.get("description")),
@@ -146,13 +173,10 @@ export default function ScheduleCreatePage(
 
 	const [speakerSearch, setSpeakerSearch] = useState<string | null>(null);
 	const [formValue, setFormValue] = useState<{
-		speaker_id: {
-			label: string;
-			value: string;
-		} | null;
+		speaker_id: SpeakerOption[];
 		description: string | null;
 	}>({
-		speaker_id: null,
+		speaker_id: [],
 		description: null,
 	});
 
@@ -225,7 +249,7 @@ export default function ScheduleCreatePage(
 							.join(", ") || undefined
 					}
 				/>
-				<DropdownSearch
+				<MultiDropdownSearch
 					id="speaker_id"
 					label="speaker"
 					name="speaker_id"
@@ -244,12 +268,7 @@ export default function ScheduleCreatePage(
 					onChange={(value) =>
 						setFormValue((prev) => ({ ...prev, speaker_id: value }))
 					}
-					errorMessage={
-						actionData?.clientError?.errors
-							.filter((item) => item.field === "speaker_id")
-							.map((item) => item.message)
-							.join(", ") || undefined
-					}
+					errorMessage={getSpeakerFieldError(actionData?.clientError?.errors)}
 				/>
 				<Select
 					id="room_id"

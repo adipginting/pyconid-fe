@@ -146,20 +146,35 @@ export const getScheduleCmsResultResponse = z.array(
 	z.object({
 		id: z.string(),
 		title: z.string(),
-		speaker: z
-			.object({
-				id: z.string(),
-				user: z.object({
-					id: z.string(),
-					username: z.string(),
-					first_name: z.string(),
-					last_name: z.string(),
+		speakers: z
+			.array(
+				z.object({
+					order: z.number(),
+					type: z.string(),
+					speaker: z.object({
+						id: z.string(),
+						user: z.object({
+							id: z.string(),
+							first_name: z.string().nullable(),
+							last_name: z.string().nullable(),
+							email: z.string().nullable(),
+							bio: z.string().nullable(),
+							company: z.string().nullable(),
+							job_category: z.string().nullable(),
+							job_title: z.string().nullable(),
+							website: z.string().nullable(),
+							facebook_username: z.string().nullable(),
+							linkedin_username: z.string().nullable(),
+							twitter_username: z.string().nullable(),
+							instagram_username: z.string().nullable(),
+						}),
+						speaker_type: z.object({
+							id: z.string(),
+							name: z.string(),
+						}),
+					}),
 				}),
-				speaker_type: z.object({
-					id: z.string(),
-					name: z.string(),
-				}),
-			})
+			)
 			.nullable(),
 		room: z.object({
 			id: z.string(),
@@ -189,7 +204,13 @@ export const getScheduleCmsResponse = z.object({
 
 export const scheduleCreateRequestSchema = z.object({
 	title: z.string(),
-	speaker_id: z.string().nullable(),
+	speakers: z.array(
+		z.object({
+			speaker_id: z.string(),
+			type: SpeakerRoleEnum,
+			order: z.number(),
+		}),
+	),
 	room_id: z.string(),
 	schedule_type_id: z.string(),
 	description: z.string().nullable(),
@@ -208,29 +229,18 @@ export type scheduleCreateRequestType = z.infer<
 export const scheduleDetailResponse = z.object({
 	id: z.string(),
 	title: z.string(),
-	speaker: z
-		.object({
-			id: z.string(),
-			user: z.object({
-				id: z.string(),
-				first_name: z.string().nullable(),
-				last_name: z.string().nullable(),
-				email: z.string().nullable(),
-				bio: z.string().nullable(),
-				company: z.string().nullable(),
-				job_category: z.string().nullable(),
-				job_title: z.string().nullable(),
-				website: z.string().nullable(),
-				facebook_username: z.string().nullable(),
-				linkedin_username: z.string().nullable(),
-				twitter_username: z.string().nullable(),
-				instagram_username: z.string().nullable(),
+	speakers: z
+		.array(
+			z.object({
+				order: z.number(),
+				type: SpeakerRoleEnum,
+				speaker: z.object({
+					id: z.string(),
+					user: UserDetailSchema,
+					speaker_type: z.union([SpeakerTypeSchema, z.null()]).nullable(),
+				}),
 			}),
-			speaker_type: z.object({
-				id: z.string(),
-				name: z.string(),
-			}),
-		})
+		)
 		.nullable(),
 	room: z.object({
 		id: z.string(),
@@ -261,7 +271,13 @@ export type ScheduleByIdResponseType = z.infer<typeof ScheduleByIdSchema>;
 
 export const scheduleUpdateRequestSchema = z.object({
 	title: z.string(),
-	speaker_id: z.string().nullable(),
+	speakers: z.array(
+		z.object({
+			speaker_id: z.string(),
+			order: z.number(),
+			type: SpeakerRoleEnum,
+		}),
+	),
 	room_id: z.string(),
 	schedule_type_id: z.string(),
 	description: z.string().nullable(),

@@ -64,6 +64,7 @@ export const DashboardSection = ({
 						showCheckIn={["Management", "Volunteer", "Organizer"].includes(
 							me.participant_type || "",
 						)}
+						showCms={["Management"].includes(me.participant_type || "")}
 					/>
 				}
 			/>

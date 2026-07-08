@@ -1,6 +1,26 @@
 import { Form, Link, useNavigation } from "react-router";
 import type { getScheduleCmsResultResponseType } from "~/api/schema/schedule";
 
+function formatSpeakers(
+	speakers: getScheduleCmsResultResponseType[number]["speakers"],
+) {
+	return (
+		speakers
+			?.slice()
+			.sort((a, b) => a.order - b.order)
+			.map(({ speaker, type }) => {
+				const firstName = speaker.user.first_name ?? "";
+				const lastName = speaker.user.last_name ?? "";
+				const fullName = `${firstName} ${lastName}`.trim();
+
+				return {
+					name: fullName || speaker.user.email || speaker.id,
+					type,
+				};
+			}) ?? []
+	);
+}
+
 export const Table = ({ data }: { data: getScheduleCmsResultResponseType }) => {
 	const navigation = useNavigation();
 
@@ -63,11 +83,23 @@ export const Table = ({ data }: { data: getScheduleCmsResultResponseType }) => {
 						</td>
 						<td className="px-4 py-2">{schedule.title}</td>
 						<td className="px-4 py-2">
-							{schedule.speaker?.user.first_name ?? ""}{" "}
-							{schedule.speaker?.user.last_name ?? ""}{" "}
-							{schedule.speaker?.user.username
-								? `(${schedule.speaker?.user.username})`
-								: ""}
+							<div className="flex flex-wrap gap-2">
+								{formatSpeakers(schedule.speakers).length > 0 ? (
+									formatSpeakers(schedule.speakers).map((speakerData) => (
+										<span
+											key={`${schedule.id}-${speakerData.type}-${speakerData.name}`}
+											className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-700"
+										>
+											<span>{speakerData.name}</span>
+											<span className="rounded-full bg-white px-2 py-0.5 text-xs font-medium text-slate-600">
+												{speakerData.type}
+											</span>
+										</span>
+									))
+								) : (
+									<span className="text-gray-500">-</span>
+								)}
+							</div>
 						</td>
 						<td className="px-4 py-2">{schedule.room.name ?? "-"}</td>
 						<td className="px-4 py-2">{schedule.schedule_type?.name ?? "-"}</td>
