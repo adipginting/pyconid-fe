@@ -4,7 +4,7 @@ import {
 	// getScheduleStream,
 } from "~/api/endpoint/.server/schedule";
 import { getStreamDetail } from "~/api/endpoint/.server/streaming";
-import { scheduleDetailResponse } from "~/api/schema/schedule";
+import { ScheduleByIdSchema } from "~/api/schema/schedule";
 import { streamingResponseSchema } from "~/api/schema/streaming";
 import { Footer } from "~/components/layouts/navigation/footer";
 import { Header } from "~/components/layouts/navigation/header";
@@ -32,7 +32,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
 	}
 
 	const jsonDataScheduleById = await dataScheduleById.json();
-	const scheduleDetail = scheduleDetailResponse.parse(jsonDataScheduleById);
+	const scheduleDetail = ScheduleByIdSchema.parse(jsonDataScheduleById);
 	if (!scheduleDetail.stream?.id) {
 		return redirect("/not-found");
 	}
