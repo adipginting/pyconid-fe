@@ -1,11 +1,135 @@
-import type { Route } from ".react-router/types/app/routes/+types/streaming";
 import type MuxPlayerElement from "@mux/mux-player";
 import MuxPlayer from "@mux/mux-player-react";
-import { BadgeCheck } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Facebook, Globe, Link2, Linkedin, Tag } from "lucide-react";
+import type { ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRevalidator } from "react-router";
 import { httpClient } from "~/lib/http/$.client";
 import { cn, parseSpeakerImage } from "~/lib/utils";
+import type { Route } from "../../../routes/+types/streaming";
+
+const SocialLink = ({
+	href,
+	children,
+	label,
+}: {
+	href: string;
+	children: ReactNode;
+	label: string;
+}) => (
+	<a
+		href={href}
+		target="_blank"
+		rel="noreferrer noopener"
+		aria-label={label}
+		className="inline-flex items-center justify-center"
+	>
+		{children}
+	</a>
+);
+
+const SpeakerCard = ({ speakerItem }: { speakerItem: ScheduleSpeaker }) => {
+	const { speaker } = speakerItem;
+	const { user, id } = speaker;
+	const fullName = `${user.first_name ?? ""} ${user.last_name ?? ""}`.trim();
+	const role =
+		user.job_title && user.company
+			? `${user.job_title} @ ${user.company}`
+			: (user.job_title ?? user.company ?? "");
+
+	const socials = [
+		{
+			value: user.website,
+			href: user.website || "",
+			icon: <Globe className="w-5 h-5 text-[#282828]" />,
+			label: "Website",
+		},
+		{
+			value: user.facebook_username,
+			href: `https://www.facebook.com/${user.facebook_username}`,
+			icon: <Facebook className="w-5 h-5 text-[#282828]" />,
+			label: "Facebook",
+		},
+		{
+			value: user.linkedin_username,
+			href: `https://www.linkedin.com/in/${user.linkedin_username}`,
+			icon: <Linkedin className="w-5 h-5 text-[#282828]" />,
+			label: "LinkedIn",
+		},
+		{
+			value: user.instagram_username,
+			href: `https://www.instagram.com/${user.instagram_username}`,
+			icon: <img src="/svg/ig-dark.svg" alt="Instagram" className="w-5 h-5" />,
+			label: "Instagram",
+		},
+		{
+			value: user.email,
+			href: `mailto:${user.email}`,
+			icon: <img src="/svg/mail-dark.svg" alt="Email" className="w-5 h-5" />,
+			label: "Email",
+		},
+		{
+			value: user.twitter_username,
+			href: `https://x.com/${user.twitter_username}`,
+			icon: <img src="/svg/x-dark.svg" alt="X" className="w-5 h-5" />,
+			label: "X",
+		},
+	].filter((item) => item.value);
+
+	const [imageSrc, setImageSrc] = useState("/images/default-avatar.webp");
+
+	useEffect(() => {
+		if (!id) return;
+		const url = parseSpeakerImage({ id });
+		const img = new Image();
+		img.onload = () => setImageSrc(url);
+		img.onerror = () => setImageSrc("/images/default-avatar.webp");
+		img.src = url;
+	}, [id]);
+
+	return (
+		<div className="flex gap-4">
+			<img
+				src={imageSrc}
+				alt={fullName}
+				className="w-[120px] h-[120px] rounded-lg object-cover shrink-0"
+			/>
+			<div className="flex flex-col gap-2 min-w-0">
+				<h3 className="font-sans font-bold text-sm text-[#282828] uppercase">
+					{fullName}
+				</h3>
+				{role && <p className="text-sm text-[#282828]">{role}</p>}
+				{user.bio && (
+					<div>
+						<h4 className="text-[#909090] font-sans font-bold text-sm">Bio</h4>
+						<p className="text-sm text-[#282828] leading-relaxed">{user.bio}</p>
+					</div>
+				)}
+				{socials.length > 0 && (
+					<div>
+						<h4 className="text-[#909090] font-sans font-bold text-sm">
+							Social Media
+						</h4>
+						<div className="flex items-center gap-3">
+							{socials.map((item) => (
+								<SocialLink
+									key={item.label}
+									href={item.href}
+									label={item.label}
+								>
+									{item.icon}
+								</SocialLink>
+							))}
+						</div>
+					</div>
+				)}
+			</div>
+		</div>
+	);
+};
+
+type ScheduleSpeaker =
+	Route.ComponentProps["loaderData"]["scheduleDetail"]["speakers"][number];
 
 export const StreamingSection = ({
 	componentProps,
@@ -14,23 +138,16 @@ export const StreamingSection = ({
 }) => {
 	const { revalidate } = useRevalidator();
 	const [talkExpansion, setTalkExpansion] = useState(true);
-	const [speakerBioExpansion, setSpeakerBioExpansion] = useState(true);
-	const [speakerImageSrc, setSpeakerImageSrc] = useState(
-		"/images/default-avatar.webp",
-	);
 
 	const scheduleDetail = componentProps.loaderData.scheduleDetail;
 	const scheduleStream = componentProps.loaderData.scheduleStream;
 	const streamId = scheduleStream.stream_id;
-	const primarySpeaker = scheduleDetail.speakers?.[0]?.speaker ?? null;
 
 	const playerRef = useRef<MuxPlayerElement>(null);
 	const heartbeatTimerRef = useRef<number | null>(null);
 	const clientSessionIdRef = useRef<string | null>(null);
 	const watchSessionIdRef = useRef<string | null>(null);
 	const isStartingRef = useRef(false);
-
-	const speakerBio = primarySpeaker?.user.bio ?? "";
 
 	const getCurrentPosition = useCallback(() => {
 		return Number(playerRef.current?.currentTime ?? 0);
@@ -170,255 +287,171 @@ export const StreamingSection = ({
 	}, [endWatch, endWatchWithKeepalive]);
 
 	const toggleTalkExpansion = () => setTalkExpansion((prev) => !prev);
-	const toggleSpeakerBioExpansion = () =>
-		setSpeakerBioExpansion((prev) => !prev);
 
-	const doesSocialMediaExist =
-		primarySpeaker?.user.instagram_username ||
-		primarySpeaker?.user.facebook_username ||
-		primarySpeaker?.user.email;
+	const isLive = scheduleStream.status === "STREAMING";
 
-	const first_name = primarySpeaker?.user.first_name;
-	const last_name = primarySpeaker?.user.last_name;
+	const duration = useMemo(() => {
+		const start = new Date(scheduleDetail.start);
+		const end = new Date(scheduleDetail.end);
+		const diffMinutes = Math.round(
+			(end.getTime() - start.getTime()) / 1000 / 60,
+		);
+		return `${diffMinutes} mins`;
+	}, [scheduleDetail.start, scheduleDetail.end]);
 
-	useEffect(() => {
-		if (primarySpeaker?.id) {
-			const imageUrl = parseSpeakerImage({ id: primarySpeaker.id });
-			const img = new Image();
-
-			img.onload = () => {
-				setSpeakerImageSrc(imageUrl);
-			};
-
-			img.onerror = () => {
-				console.log("Failed to load speaker image, using default avatar");
-				setSpeakerImageSrc("/images/default-avatar.webp");
-			};
-
-			img.src = imageUrl;
+	const languageLabel = useMemo(() => {
+		switch (scheduleDetail.presentation_language) {
+			case "Bahasa Indonesia":
+				return "ID";
+			case "English":
+				return "EN";
+			default:
+				return scheduleDetail.presentation_language ?? "-";
 		}
-	}, [primarySpeaker?.id]);
+	}, [scheduleDetail.presentation_language]);
+
+	const description = scheduleDetail.description ?? "";
+	const hasLongDescription = description.length > 180;
 
 	return (
-		<section className="bg-[#F1F1F1] p-5">
-			<div className="z-10 relative container m-auto">
-				<div className="pt-[12vh]">
-					<div className="flex flex-col p-2 gap-y-3">
-						<div className="rounded-2xl overflow-hidden">
-							<MuxPlayer
-								ref={playerRef}
-								className="w-full aspect-video bg-black"
-								playbackId={scheduleStream.playback.id}
-								streamType={
-									scheduleStream.status === "STREAMING" ? "live" : "on-demand"
-								}
-								tokens={
-									scheduleStream.playback.token
-										? {
-												playback: scheduleStream.playback.token,
-												thumbnail: scheduleStream.thumbnail?.token ?? undefined,
-											}
-										: undefined
-								}
-								metadata={{
-									video_id: streamId,
-									video_title: scheduleDetail.title,
-									viewer_user_id: scheduleStream.metadata.user_id || undefined,
-								}}
-								onPlay={() => {
-									void startWatch();
-								}}
-								onPause={() => {
-									void pauseWatch();
-								}}
-								onEnded={() => {
-									void endWatch();
-								}}
+		<section className="bg-[#FAF9F7] min-h-screen pt-20">
+			<div className="container mx-auto px-4 md:px-12 py-10 md:py-20 flex flex-col gap-10 md:gap-16">
+				<div className="relative w-full h-[220px] md:h-[640px] bg-[#EAEAEA] rounded-lg overflow-hidden">
+					<MuxPlayer
+						ref={playerRef}
+						className="w-full h-full bg-black"
+						playbackId={scheduleStream.playback.id}
+						streamType={isLive ? "live" : "on-demand"}
+						tokens={
+							scheduleStream.playback.token
+								? {
+										playback: scheduleStream.playback.token,
+										thumbnail: scheduleStream.thumbnail?.token ?? undefined,
+									}
+								: undefined
+						}
+						metadata={{
+							video_id: streamId,
+							video_title: scheduleDetail.title,
+							viewer_user_id: scheduleStream.metadata.user_id || undefined,
+						}}
+						onPlay={() => {
+							void startWatch();
+						}}
+						onPause={() => {
+							void pauseWatch();
+						}}
+						onEnded={() => {
+							void endWatch();
+						}}
+					/>
+
+					<div className="absolute inset-0 pointer-events-none flex flex-col justify-between p-4 md:p-6">
+						<div className="flex items-start justify-between">
+							<img
+								src="/svg/logo/2026/logo_horizontal-white.svg"
+								alt="PyCon ID 2026"
+								className="h-6 md:h-8"
 							/>
-						</div>
-						<div className="flex justify-between items-center">
-							<p className="font-display text-lg md:text-2xl font-bold">
-								{scheduleDetail.title}
-							</p>
-							<p className="font-sans text-sm font-light">
-								{scheduleDetail.room.name}
-							</p>
-						</div>
-						<div className="flex flex-col rounded-md shadow-[6px_6px_12px_rgba(0,0,0,0.2)] p-3">
-							<div className="flex items-center justify-between">
-								{primarySpeaker?.user ? (
-									<div className="flex items-center gap-x-5">
-										<img
-											src={speakerImageSrc}
-											alt={`${first_name} ${last_name}`}
-											className="w-10 h-10 rounded-full"
-										/>
-										<div className="flex flex-col">
-											<div className="flex items-center gap-x-1">
-												<p className="font-sans font-bold">
-													{`${first_name} ${last_name}`}{" "}
-													<span className="inline-block align-middle">
-														<BadgeCheck fill="blue" color="white" />
-													</span>
-												</p>
-											</div>
-											{primarySpeaker?.user.job_title && (
-												<p>
-													{primarySpeaker?.user.job_title} at{" "}
-													{primarySpeaker?.user.company}
-												</p>
-											)}
-										</div>
-									</div>
-								) : (
-									<div></div>
-								)}
-
-								<div className="font-sans font-semibold bg-[#93B2F5] rounded-sm p-2">
-									{scheduleDetail.schedule_type.name}
+							{isLive && (
+								<div className="flex items-center gap-1.5 md:gap-2 bg-[#ED2324] text-white px-2 py-1 md:px-2.5 md:py-1.5 rounded">
+									<span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-white" />
+									<span className="font-sans font-bold text-[8px] md:text-xs tracking-[0.25em]">
+										LIVE
+									</span>
 								</div>
-							</div>
-							<div className="flex flex-col p-6">
-								<p className="font-display font-semibold text-lg md:text-2xl text-[#224083]">
-									{scheduleDetail.title}
-								</p>
-								{scheduleDetail.description ? (
-									<div>
-										<p
-											className={cn(
-												"font-sans text-sm md:text-base leading-loose",
-												scheduleDetail.description.length > 100 && talkExpansion
-													? "line-clamp-2"
-													: "",
-											)}
-										>
-											{scheduleDetail.description}
-										</p>
-										{scheduleDetail.description.length > 100 && (
-											<div className="flex flex-col items-start">
-												<button
-													type="button"
-													onClick={toggleTalkExpansion}
-													className="text-base font-semibold text-blue-900"
-												>
-													{scheduleDetail.description.length > 100 &&
-													talkExpansion
-														? "...show more"
-														: "show less..."}
-												</button>
-												<p className="mt-5">
-													{!talkExpansion && scheduleDetail.slide_link ? (
-														<a
-															href={scheduleDetail.slide_link}
-															className="text-base font-bold text-blue-900 underline"
-														>
-															Access presentation file
-														</a>
-													) : null}
-												</p>
-											</div>
-										)}
-									</div>
-								) : null}
-							</div>
+							)}
 						</div>
-						{primarySpeaker?.user ? (
-							<div className="flex md:flex-row md:gap-y-0 gap-y-5 flex-col gap-x-5 bg-[#F37F20] p-6 rounded-md">
-								<img
-									src={speakerImageSrc}
-									alt={`${first_name} ${last_name} `}
-									className="w-30 h-40 md:w-60 md:h-80 rounded-md object-cover"
-								/>
-								<div className="flex flex-col font-sans text-white">
-									<p className="font-bold text-lg md:text-4xl">{`${primarySpeaker?.user.first_name} ${primarySpeaker?.user.last_name}`}</p>
-									{primarySpeaker?.user.job_title ? (
-										<p className="font-semibold text-base">
-											{primarySpeaker?.user.job_title} at{" "}
-											{primarySpeaker?.user.company}
-										</p>
-									) : null}
-
-									{speakerBio ? (
-										<div>
-											<p className="font-semibold text-base md:text-xl mt-3">
-												Bio
-											</p>
-											<div className="flex flex-col items-start gap-y-2">
-												<p
-													className={cn(
-														"font-semibold text-sm md:text-base text-justify",
-														speakerBio.length > 100 && speakerBioExpansion
-															? "line-clamp-2"
-															: "",
-													)}
-												>
-													{speakerBio}
-												</p>
-												{speakerBio.length > 100 ? (
-													<button
-														type="button"
-														onClick={toggleSpeakerBioExpansion}
-													>
-														{speakerBioExpansion
-															? "...See more"
-															: "See less... "}
-													</button>
-												) : null}
-											</div>
-										</div>
-									) : null}
-
-									{doesSocialMediaExist && (
-										<div className="flex flex-col items-start gap-y-1">
-											<p className="font-semibold text-xl mt-3">Social Media</p>
-											<div className="flex items-center justify-center">
-												{primarySpeaker?.user.instagram_username && (
-													<a
-														href={`https://instagram.com/${primarySpeaker?.user.instagram_username}`}
-														target="_blank"
-														rel="noreferrer noopener"
-													>
-														<img
-															src="/svg/ig.svg"
-															alt="IG"
-															className="w-10 h-10"
-														/>
-													</a>
-												)}
-												{primarySpeaker?.user.email && (
-													<a
-														href={`mailto:${primarySpeaker?.user.email}`}
-														target="_blank"
-														rel="noreferrer noopener"
-													>
-														<img
-															src="/svg/mail.svg"
-															alt="Email"
-															className="w-10 h-10"
-														/>
-													</a>
-												)}
-												{primarySpeaker?.user.twitter_username && (
-													<a
-														href={`https://x.com/${primarySpeaker?.user.twitter_username}`}
-														target="_blank"
-														rel="noreferrer noopener"
-													>
-														<img
-															src="/svg/x.svg"
-															alt="X formerly known as Twitter"
-															className="w-10 h-10"
-														/>
-													</a>
-												)}
-											</div>
-										</div>
-									)}
-								</div>
-							</div>
-						) : null}
 					</div>
 				</div>
+				<div className="flex flex-col gap-4">
+					<div className="flex flex-wrap items-center gap-2 md:gap-3">
+						<div className="inline-flex items-center gap-1.5 md:gap-2 text-[#909090] font-sans font-bold text-sm">
+							<Tag className="w-4 h-4" />
+							<span>{scheduleDetail.schedule_type.name}</span>
+						</div>
+						<div className="inline-flex items-center gap-1.5 md:gap-2 bg-[#F1F1F1] text-[#909090] font-sans font-bold text-sm px-2 py-1 rounded">
+							<Globe className="w-4 h-4" />
+							<span>{languageLabel}</span>
+						</div>
+					</div>
+
+					<h1 className="font-sans font-bold text-xl md:text-2xl text-[#282828]">
+						{scheduleDetail.title}
+					</h1>
+
+					<div className="flex flex-wrap items-center gap-3 md:gap-4 text-sm text-[#909090]">
+						<div className="flex items-center gap-1.5">
+							<p>Duration:</p>
+							<span className="font-sans font-bold pl-1">{duration}</span>
+						</div>
+						<span className="w-1 h-1 rounded-full bg-[#C4C4C4]" />
+						<div className="flex items-center gap-1.5">
+							<p>Location: </p>
+							<span className="font-sans font-bold pl-1">
+								{scheduleDetail.room.name}
+							</span>
+						</div>
+					</div>
+				</div>
+
+				<div className="flex flex-col gap-4">
+					<h2 className="text-[#909090] font-sans font-bold text-base">
+						About the Session
+					</h2>
+
+					{description ? (
+						<div className="flex flex-col gap-3">
+							<p
+								className={cn(
+									"text-sm md:text-base text-[#282828] leading-relaxed",
+									hasLongDescription && talkExpansion && "line-clamp-3",
+								)}
+							>
+								{description}
+							</p>
+							{hasLongDescription && (
+								<button
+									type="button"
+									onClick={toggleTalkExpansion}
+									className="self-start font-sans font-bold text-sm text-[#282828]"
+								>
+									{talkExpansion ? "Show more" : "Show less"}
+								</button>
+							)}
+						</div>
+					) : null}
+
+					{scheduleDetail.slide_link && (
+						<a
+							href={scheduleDetail.slide_link}
+							target="_blank"
+							rel="noreferrer noopener"
+							className="inline-flex items-center gap-2.5 self-start bg-[#FAFAFA] text-[#282828] px-4 py-3 rounded font-sans font-bold text-sm"
+						>
+							<Link2 className="w-4 h-4" />
+							Presentation File
+						</a>
+					)}
+				</div>
+
+				<hr className="border-[#909090]/30" />
+				{scheduleDetail.speakers && scheduleDetail.speakers.length > 0 && (
+					<div className="flex flex-col gap-6">
+						<h2 className="text-[#909090] font-sans font-bold text-base">
+							About the Speaker
+							{scheduleDetail.speakers.length > 1 ? "s" : ""}
+						</h2>
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+							{scheduleDetail.speakers.map((speakerItem) => (
+								<SpeakerCard
+									key={speakerItem.speaker.id}
+									speakerItem={speakerItem}
+								/>
+							))}
+						</div>
+					</div>
+				)}
 			</div>
 		</section>
 	);
