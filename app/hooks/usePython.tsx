@@ -13,7 +13,7 @@ You may assume that each input would have exactly one solution, and you may not 
 			console.log("example 2: nums: [3, 2, 4] target: 6 output: [1, 2]");
 			console.log("example 3: nums: [3, 3] target: 6 output: [0, 1]");
 			console.log(
-				"to answer just call window.answerPy function and put your python function named it `def two_sums(numbers: list[int])`. Here the example",
+				"to answer just call window.answerPy function and put your python function named it `def two_sums(numbers: list[int], target: int) -> list[int]`. Here the example",
 			);
 			console.log(`window.answerPy(\`
 import random
