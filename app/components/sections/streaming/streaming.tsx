@@ -1,12 +1,6 @@
 import type MuxPlayerElement from "@mux/mux-player";
 import MuxPlayer from "@mux/mux-player-react";
-import {
-	Facebook,
-	Globe,
-	Link2,
-	Linkedin,
-	Tag,
-} from "lucide-react";
+import { Facebook, Globe, Link2, Linkedin, Tag } from "lucide-react";
 import type { ReactNode } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRevalidator } from "react-router";
@@ -394,7 +388,9 @@ export const StreamingSection = ({
 						<span className="w-1 h-1 rounded-full bg-[#C4C4C4]" />
 						<div className="flex items-center gap-1.5">
 							<p>Location: </p>
-							<span className="font-sans font-bold pl-1">{scheduleDetail.room.name}</span>
+							<span className="font-sans font-bold pl-1">
+								{scheduleDetail.room.name}
+							</span>
 						</div>
 					</div>
 				</div>
