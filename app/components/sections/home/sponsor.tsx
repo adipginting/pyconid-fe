@@ -26,18 +26,12 @@ export const SponsorSection = () => {
 
 					<div className="p-5 text-center text-bold text-black text-2xl max-w-2xl">
 						<div>
-							<h3 className="mb-5 font-bold text-4xl">
-								Our Sponsor
-							</h3>
+							<h3 className="mb-5 font-bold text-4xl">Our Sponsor</h3>
 							<div className="grid grid-cols-1 gap-5">
 								{/* Gold Sponsor Section */}
 								<div className="grid grid-cols-1 w-full items-center justify-center gap-5">
 									<p className="text-xl font-medium">Gold Sponsor</p>
-									<a
-										href="https://apify.com/"
-										target="_blank"
-										rel="noreferrer"
-									>
+									<a href="https://apify.com/" target="_blank" rel="noreferrer">
 										<img
 											src="/images/logo/sponsor/2026/logo-apify.png"
 											alt="Apify"
