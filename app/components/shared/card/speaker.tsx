@@ -1,4 +1,4 @@
-// import { MailIcon } from "lucide-react";
+import { MailIcon } from "lucide-react";
 import { cn, onAvatarError } from "~/lib/utils";
 import { Instagram } from "../icons/instagram";
 import { Linkedin } from "../icons/linkedin";
@@ -11,6 +11,7 @@ export interface SpeakerCardProps {
 	instagram?: string;
 	twitter?: string;
 	linkedin?: string;
+	email?: string;
 	image?: string;
 }
 
@@ -21,9 +22,10 @@ export const SpeakerCard = ({
 	instagram,
 	twitter,
 	linkedin,
+	email,
 	image,
 }: SpeakerCardProps) => {
-	const hasSocialLinks = instagram || twitter || linkedin;
+	const hasSocialLinks = instagram || twitter || linkedin || email;
 
 	return (
 		<div
@@ -75,7 +77,7 @@ export const SpeakerCard = ({
 				</div>
 
 				{/* Bottom Half - Dark Background */}
-				<div className="bg-surface text-white p-6 pt-5 flex flex-col justify-between flex-1 min-h-[140px]">
+				<div className="bg-surface text-white p-2 pt-5 flex flex-col justify-between flex-1 min-h-[140px]">
 					<div className="text-center mb-4">
 						<p className="font-light text-sm text-gray-200">
 							{description}
@@ -132,6 +134,21 @@ export const SpeakerCard = ({
 										)}
 									>
 										<Linkedin className="size-4" />
+									</a>
+								</div>
+							)}
+							{email && (
+								<div className="bg-background overflow-hidden p-0.5 [clip-path:polygon(20%_0,100%_0%,100%_80%,80%_100%,0_100%,0_20%)]">
+									<a
+										href={email}
+										target="_blank"
+										rel="noopener noreferrer"
+										className={cn(
+											"flex items-center justify-center size-9 bg-foreground hover:bg-white hover:text-surface transition-colors",
+											"[clip-path:polygon(20%_0,100%_0%,100%_80%,80%_100%,0_100%,0_20%)]",
+										)}
+									>
+										<MailIcon className="size-4" />
 									</a>
 								</div>
 							)}
