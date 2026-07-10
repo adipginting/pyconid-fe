@@ -2,6 +2,7 @@ import { MailIcon } from "lucide-react";
 import { cn, onAvatarError } from "~/lib/utils";
 import { Instagram } from "../icons/instagram";
 import { Twitter } from "../icons/twitter";
+import { Linkedin } from "../icons/linkedin";
 
 export interface SpeakerCardProps {
 	name: string;
@@ -9,7 +10,7 @@ export interface SpeakerCardProps {
 	company: string;
 	instagram?: string;
 	twitter?: string;
-	email?: string;
+	linkedin?: string;
 	image?: string;
 }
 
@@ -19,10 +20,10 @@ export const SpeakerCard = ({
 	company,
 	instagram,
 	twitter,
-	email,
+	linkedin,
 	image,
 }: SpeakerCardProps) => {
-	const hasSocialLinks = instagram || twitter || email;
+	const hasSocialLinks = instagram || twitter || linkedin;
 
 	return (
 		<div
@@ -41,13 +42,13 @@ export const SpeakerCard = ({
 					<img
 						src="/images/PyCon ID 26 Logo@2x.png"
 						alt="PyCon ID 2026"
-						className="absolute top-12 left-6 h-8 z-10"
+						className="absolute top-2 right-2 h-8 z-10"
 					/>
 					{image && (
 						<img
 							src={image}
 							alt={name}
-							className="w-full h-96 object-cover object-bottom z-0"
+							className="w-full h-112 object-cover object-bottom z-0"
 							loading="lazy"
 							onError={onAvatarError}
 						/>
@@ -119,10 +120,10 @@ export const SpeakerCard = ({
 									</a>
 								</div>
 							)}
-							{email && (
+							{linkedin && (
 								<div className="bg-background overflow-hidden p-0.5 [clip-path:polygon(20%_0,100%_0%,100%_80%,80%_100%,0_100%,0_20%)]">
 									<a
-										href={email}
+										href={linkedin}
 										target="_blank"
 										rel="noopener noreferrer"
 										className={cn(
@@ -130,7 +131,7 @@ export const SpeakerCard = ({
 											"[clip-path:polygon(20%_0,100%_0%,100%_80%,80%_100%,0_100%,0_20%)]",
 										)}
 									>
-										<MailIcon className="size-4" />
+										<Linkedin className="size-4" />
 									</a>
 								</div>
 							)}
