@@ -1,8 +1,8 @@
-import { MailIcon } from "lucide-react";
+// import { MailIcon } from "lucide-react";
 import { cn, onAvatarError } from "~/lib/utils";
 import { Instagram } from "../icons/instagram";
-import { Twitter } from "../icons/twitter";
 import { Linkedin } from "../icons/linkedin";
+import { Twitter } from "../icons/twitter";
 
 export interface SpeakerCardProps {
 	name: string;
