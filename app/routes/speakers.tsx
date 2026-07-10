@@ -7,7 +7,7 @@ import { SpeakersSection } from "~/components/sections/schedules/speakers";
 
 export function meta() {
 	return [
-		{ title: "PyCon ID 2025 Speakers" },
+		{ title: "PyCon ID 2026 Speakers" },
 		{ name: "Speakers", content: "Speakers page" },
 	];
 }

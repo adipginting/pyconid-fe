@@ -1,9 +1,9 @@
 export const SponsorSection = () => {
 	return (
-		<section className="pt-18 sm:pt-36 relative">
+		<section className="pt-12 mb-10 sm:pt-36 relative">
 			<div className="container mx-auto text-white px-5 2xl:px-0">
 				<div className="flex flex-col items-center">
-					<div className="h-max mb-12 md:mb-12 md:top-12 text-center">
+					<div className="h-max mb-6 md:mb-6 md:top-12 text-center">
 						<p className="text-black font-medium text-2xl md:text-3xl mb-4">
 							We appreciate your support!
 						</p>
@@ -24,27 +24,21 @@ export const SponsorSection = () => {
 						</a>
 					</div>
 
-					<div className="p-5 text-center text-bold text-blue-900 text-2xl max-w-2xl">
+					<div className="p-5 text-center text-bold text-black text-2xl max-w-2xl">
 						<div>
-							{/* <h3 className="mb-5 font-bold text-4xl">
-								Our Sponsors
-							</h3> */}
+							<h3 className="mb-5 font-bold text-4xl">Our Sponsor</h3>
 							<div className="grid grid-cols-1 gap-5">
-								{/* Ultimate Sponsor Section */}
-								{/* <div className="grid grid-cols-1 w-full items-center justify-center gap-5">
-									<p className="text-xl font-medium">Ultimate Sponsor</p>
-									<a
-										href="https://serpapi.com/"
-										target="_blank"
-										rel="noreferrer"
-									>
+								{/* Gold Sponsor Section */}
+								<div className="grid grid-cols-1 w-full items-center justify-center gap-5">
+									<p className="text-xl font-medium">Gold Sponsor</p>
+									<a href="https://apify.com/" target="_blank" rel="noreferrer">
 										<img
-											src="/images/logo-serpapi.png"
-											alt="SerpApi"
-											className="object-cover max-h-70 mx-auto"
+											src="/images/logo/sponsor/2026/logo-apify.png"
+											alt="Apify"
+											className="object-cover max-h-35 mx-auto"
 										/>
 									</a>
-								</div> */}
+								</div>
 								{/* Silver Sponsor Section */}
 								{/* <div className="grid grid-cols-1 w-full items-center justify-center gap-5">
 									<p className="text-xl font-medium">Silver Sponsor</p>
