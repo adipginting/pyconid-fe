@@ -1,6 +1,7 @@
 import { MailIcon } from "lucide-react";
 import { cn, onAvatarError } from "~/lib/utils";
 import { Instagram } from "../icons/instagram";
+import { Linkedin } from "../icons/linkedin";
 import { Twitter } from "../icons/twitter";
 
 export interface SpeakerCardProps {
@@ -9,6 +10,7 @@ export interface SpeakerCardProps {
 	company: string;
 	instagram?: string;
 	twitter?: string;
+	linkedin?: string;
 	email?: string;
 	image?: string;
 }
@@ -19,10 +21,11 @@ export const SpeakerCard = ({
 	company,
 	instagram,
 	twitter,
+	linkedin,
 	email,
 	image,
 }: SpeakerCardProps) => {
-	const hasSocialLinks = instagram || twitter || email;
+	const hasSocialLinks = instagram || twitter || linkedin || email;
 
 	return (
 		<div
@@ -41,13 +44,13 @@ export const SpeakerCard = ({
 					<img
 						src="/images/PyCon ID 26 Logo@2x.png"
 						alt="PyCon ID 2026"
-						className="absolute top-12 left-6 h-8 z-10"
+						className="absolute top-2 right-2 h-8 z-10"
 					/>
 					{image && (
 						<img
 							src={image}
 							alt={name}
-							className="w-full h-96 object-cover object-bottom z-0"
+							className="w-full h-112 object-cover object-bottom z-0"
 							loading="lazy"
 							onError={onAvatarError}
 						/>
@@ -74,7 +77,7 @@ export const SpeakerCard = ({
 				</div>
 
 				{/* Bottom Half - Dark Background */}
-				<div className="bg-surface text-white p-6 pt-5 flex flex-col justify-between flex-1 min-h-[140px]">
+				<div className="bg-surface text-white p-2 pt-5 flex flex-col justify-between flex-1 min-h-[140px]">
 					<div className="text-center mb-4">
 						<p className="font-light text-sm text-gray-200">
 							{description}
@@ -116,6 +119,21 @@ export const SpeakerCard = ({
 										)}
 									>
 										<Twitter className="size-4" />
+									</a>
+								</div>
+							)}
+							{linkedin && (
+								<div className="bg-background overflow-hidden p-0.5 [clip-path:polygon(20%_0,100%_0%,100%_80%,80%_100%,0_100%,0_20%)]">
+									<a
+										href={linkedin}
+										target="_blank"
+										rel="noopener noreferrer"
+										className={cn(
+											"flex items-center justify-center size-9 bg-foreground hover:bg-white hover:text-surface transition-colors",
+											"[clip-path:polygon(20%_0,100%_0%,100%_80%,80%_100%,0_100%,0_20%)]",
+										)}
+									>
+										<Linkedin className="size-4" />
 									</a>
 								</div>
 							)}
