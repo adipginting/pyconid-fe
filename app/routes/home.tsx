@@ -11,7 +11,7 @@ import { SponsorSection } from "~/components/sections/home/sponsor";
 export function meta() {
 	return [
 		{ title: "PyCon ID 2026" },
-		{ name: "PyCon ID 2026 Home Page", content: "Website for PyconID 2026" },
+		{ name: "PyCon ID 2026 Home Page", content: "Website for PyCon ID 2026" },
 	];
 }
 
