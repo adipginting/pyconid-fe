@@ -1,4 +1,64 @@
+import { useQuery } from "@tanstack/react-query";
+import { getPatrons } from "~/api/endpoint/.client/patron";
+import {
+	type PatronListResponseItem,
+	patronListResponseSchema,
+	patronTierSchema,
+} from "~/api/schema/patron";
+
+const tierOrder = patronTierSchema.options;
+
+const getPatronImageUrl = (id: string) => {
+	const baseUrl = (import.meta.env.VITE_BASE_API ?? "").replace(/\/$/, "");
+	return `${baseUrl}/patron/${encodeURIComponent(id)}/image/`;
+};
+
+const groupPatronsByTier = (patrons: PatronListResponseItem[]) => {
+	return patrons.reduce<Record<string, PatronListResponseItem[]>>(
+		(grouped, patron) => {
+			if (!grouped[patron.tier]) {
+				grouped[patron.tier] = [];
+			}
+			grouped[patron.tier].push(patron);
+			return grouped;
+		},
+		{},
+	);
+};
+
+const chunkPatrons = (patrons: PatronListResponseItem[], chunkSize: number) => {
+	return patrons.reduce<PatronListResponseItem[][]>((rows, patron, index) => {
+		const rowIndex = Math.floor(index / chunkSize);
+		if (!rows[rowIndex]) {
+			rows[rowIndex] = [];
+		}
+		rows[rowIndex].push(patron);
+		return rows;
+	}, []);
+};
+
 export const SponsorSection = () => {
+	const { data: patrons = [] } = useQuery({
+		queryKey: ["patrons"],
+		queryFn: async () => {
+			const response = await getPatrons();
+			if (!response.ok) {
+				throw new Error("Failed to fetch patron data");
+			}
+
+			const result = patronListResponseSchema.parse(await response.json());
+			return result.results;
+		},
+	});
+
+	const patronsByTier = groupPatronsByTier(patrons);
+	const tiers = [
+		...tierOrder,
+		...Object.keys(patronsByTier).filter(
+			(tier) => !tierOrder.includes(tier as (typeof tierOrder)[number]),
+		),
+	];
+
 	return (
 		<section className="pt-12 mb-10 sm:pt-36 relative">
 			<div className="container mx-auto text-white px-5 2xl:px-0">
@@ -27,33 +87,46 @@ export const SponsorSection = () => {
 					<div className="p-5 text-center text-bold text-black text-2xl max-w-2xl">
 						<div>
 							<h3 className="mb-5 font-bold text-4xl">Our Sponsor</h3>
-							<div className="grid grid-cols-1 gap-5">
-								{/* Gold Sponsor Section */}
-								<div className="grid grid-cols-1 w-full items-center justify-center gap-5">
-									<p className="text-xl font-medium">Gold Sponsor</p>
-									<a href="https://apify.com/" target="_blank" rel="noreferrer">
-										<img
-											src="/images/logo/sponsor/2026/logo-apify.png"
-											alt="Apify"
-											className="object-cover max-h-35 mx-auto"
-										/>
-									</a>
-								</div>
-								{/* Silver Sponsor Section */}
-								{/* <div className="grid grid-cols-1 w-full items-center justify-center gap-5">
-									<p className="text-xl font-medium">Silver Sponsor</p>
-									<a
-										href="https://www.navicat.com/en/"
-										target="_blank"
-										rel="noreferrer"
-									>
-										<img
-											src="/images/logo-navicat.webp"
-											alt="Navicat"
-											className="object-cover max-h-50 mx-auto"
-										/>
-									</a>
-								</div> */}
+							<div className="grid grid-cols-1 gap-8">
+								{tiers.map((tier) => {
+									const tierPatrons = patronsByTier[tier];
+									if (!tierPatrons?.length) return null;
+
+									return (
+										<div
+											key={tier}
+											className="grid grid-cols-1 w-full items-center justify-center gap-5"
+										>
+											<p className="text-xl font-medium capitalize">
+												{tier} Sponsor
+											</p>
+											{chunkPatrons(tierPatrons, 2).map((row, rowIndex) => (
+												<div
+													// biome-ignore lint/suspicious/noArrayIndexKey: it's just for row not the item and the order often not change
+													key={`${tier}-${rowIndex}`}
+													className="flex flex-wrap items-center justify-center gap-8"
+												>
+													{row.map((patron) => (
+														<div
+															key={patron.id}
+															className="flex min-h-24 min-w-40 items-center justify-center"
+														>
+															{patron.has_image ? (
+																<img
+																	src={getPatronImageUrl(patron.id)}
+																	alt={patron.name}
+																	className="object-contain max-h-35 max-w-60"
+																/>
+															) : (
+																<span>{patron.name}</span>
+															)}
+														</div>
+													))}
+												</div>
+											))}
+										</div>
+									);
+								})}
 							</div>
 						</div>
 					</div>
