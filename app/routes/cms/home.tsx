@@ -12,6 +12,7 @@ export default function CMSHomePage() {
 					{ to: "/cms/volunteer", label: "Volunteer" },
 					{ to: "/cms/user", label: "User QR" },
 					{ to: "/cms/schedule", label: "Schedule" },
+					{ to: "/cms/patron", label: "Patron" },
 				].map(({ to, label }) => (
 					<li key={to} style={{ marginBottom: "8px" }}>
 						<Link
