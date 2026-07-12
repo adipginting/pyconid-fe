@@ -26,6 +26,17 @@ const groupPatronsByTier = (patrons: PatronListResponseItem[]) => {
 	);
 };
 
+const chunkPatrons = (patrons: PatronListResponseItem[], chunkSize: number) => {
+	return patrons.reduce<PatronListResponseItem[][]>((rows, patron, index) => {
+		const rowIndex = Math.floor(index / chunkSize);
+		if (!rows[rowIndex]) {
+			rows[rowIndex] = [];
+		}
+		rows[rowIndex].push(patron);
+		return rows;
+	}, []);
+};
+
 export const SponsorSection = () => {
 	const { data: patrons = [] } = useQuery({
 		queryKey: ["patrons"],
@@ -89,24 +100,30 @@ export const SponsorSection = () => {
 											<p className="text-xl font-medium capitalize">
 												{tier} Sponsor
 											</p>
-											<div className="flex flex-wrap items-center justify-center gap-8">
-												{tierPatrons.map((patron) => (
-													<div
-														key={patron.id}
-														className="flex min-h-24 min-w-40 items-center justify-center"
-													>
-														{patron.has_image ? (
-															<img
-																src={getPatronImageUrl(patron.id)}
-																alt={patron.name}
-																className="object-contain max-h-35 max-w-60"
-															/>
-														) : (
-															<span>{patron.name}</span>
-														)}
-													</div>
-												))}
-											</div>
+											{chunkPatrons(tierPatrons, 2).map((row, rowIndex) => (
+												<div
+													// biome-ignore lint/suspicious/noArrayIndexKey: it's just for row not the item and the order often not change
+													key={`${tier}-${rowIndex}`}
+													className="flex flex-wrap items-center justify-center gap-8"
+												>
+													{row.map((patron) => (
+														<div
+															key={patron.id}
+															className="flex min-h-24 min-w-40 items-center justify-center"
+														>
+															{patron.has_image ? (
+																<img
+																	src={getPatronImageUrl(patron.id)}
+																	alt={patron.name}
+																	className="object-contain max-h-35 max-w-60"
+																/>
+															) : (
+																<span>{patron.name}</span>
+															)}
+														</div>
+													))}
+												</div>
+											))}
 										</div>
 									);
 								})}
