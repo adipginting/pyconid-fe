@@ -179,10 +179,7 @@ export const OrganizersSection = ({
 
 							<div
 								className={cn(
-									"grid gap-8 justify-items-center",
-									isLeadOrganizer
-										? "sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-										: "sm:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl mx-auto",
+									"grid gap-8 justify-items-center place-items-center sm:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl mx-auto",
 									group.items.length === 1 &&
 										"sm:grid-cols-1 lg:grid-cols-1 max-w-xl",
 									group.items.length === 2 &&

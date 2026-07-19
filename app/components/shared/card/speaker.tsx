@@ -34,7 +34,7 @@ export const SpeakerCard = ({
 			onClick={onClick}
 			type="button"
 			className={cn(
-				"w-full max-w-[340px] mx-auto drop-shadow-md bg-foreground transition-transform p-0.5 hover:-translate-y-1",
+				"w-[340px] mx-auto drop-shadow-md bg-foreground transition-transform p-0.5 hover:-translate-y-1",
 				"[clip-path:polygon(42%_0,100%_0,100%_100%,42%_100%,36%_94%,0_94%,0_12%,8%_5%,36%_5%)]",
 			)}
 		>
