@@ -1,11 +1,17 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import type { OrganizerPublicType } from "~/api/schema/organizer";
 import type { VolunteerPublicType } from "~/api/schema/volunteer";
 import {
 	OurTeamCard,
 	type OurTeamCardProps,
 } from "~/components/shared/card/our-team";
+import {
+	SpeakerCard,
+	type SpeakerCardProps,
+} from "~/components/shared/card/speaker";
+import { Hero } from "~/components/shared/hero/hero";
 import { cn, parseOrganizerImage, parseVolunteerImage } from "~/lib/utils";
+import { OrganizerModal } from "./organizer-modal";
 
 interface OrganizersSectionProps {
 	organizers: OrganizerPublicType[];
@@ -24,8 +30,12 @@ export const OrganizersSection = ({
 	organizers,
 	volunteers,
 }: OrganizersSectionProps) => {
+	const [selectedPerson, setSelectedPerson] = useState<
+		OrganizerPublicType | VolunteerPublicType | null
+	>(null);
+
 	const parsedOrganizers = useMemo(() => {
-		const lead: (OurTeamCardProps & { id: string })[] = [];
+		const lead: (SpeakerCardProps & { id: string })[] = [];
 		const program: (OurTeamCardProps & { id: string })[] = [];
 		const website: (OurTeamCardProps & { id: string })[] = [];
 		const coordinator: (OurTeamCardProps & { id: string })[] = [];
@@ -38,28 +48,27 @@ export const OrganizersSection = ({
 			organizers.forEach((organizer) => {
 				const organizerType = organizer.organizer_type?.name?.toLowerCase();
 
-				const parsedItem: OurTeamCardProps & { id: string } = {
+				const parsedItem: SpeakerCardProps & { id: string } = {
 					id: organizer.id,
 					name: getFullName(organizer),
-					email: organizer?.user?.email || undefined,
-					profile_picture: parseOrganizerImage({ id: organizer.id }),
-					twitter_username:
+					description: organizer.organizer_type?.name || "",
+					company: "",
+					image:
+						organizer.user.profile_picture ||
+						parseOrganizerImage({ id: organizer.id }),
+					twitter:
 						(organizer?.user?.twitter_username &&
 							`https://twitter.com/${organizer?.user?.twitter_username}`) ||
 						undefined,
-					instagram_username:
+					instagram:
 						(organizer?.user?.instagram_username &&
 							`https://www.instagram.com/${organizer?.user?.instagram_username}`) ||
 						undefined,
-					linkedin_username:
+					linkedin:
 						(organizer?.user?.linkedin_username &&
 							`https://www.linkedin.com/in/${organizer?.user?.linkedin_username}`) ||
 						undefined,
-					facebook_username:
-						(organizer?.user?.facebook_username &&
-							`https://www.facebook.com/${organizer?.user?.facebook_username}`) ||
-						undefined,
-					website: organizer?.user?.website || undefined,
+					email: organizer?.user?.email || undefined,
 				};
 
 				if (organizerType?.includes("lead")) {
@@ -113,7 +122,6 @@ export const OrganizersSection = ({
 			{ name: "Lead Organizers", items: lead },
 			{ name: "Programs", items: program },
 			{ name: "Website", items: website },
-			{ name: "HIMASI Lead", items: coordinator },
 			{ name: "Participant Experience", items: experience },
 			{ name: "Logistic", items: logistic },
 			{ name: "Creative", items: creative },
@@ -122,112 +130,112 @@ export const OrganizersSection = ({
 	}, [organizers, organizers.length, volunteers, volunteers.length]);
 
 	return (
-		<section className="pt-9 sm:pt-36 bg-[#F1F1F1] relative w-full overflow-x-hidden">
-			{/* wing decoretion 1 */}
-			<div className="absolute top-8 right-0">
-				<img
-					src="/svg/wing-decoration-blue.svg"
-					alt=""
-					className="w-10 -scale-x-100 md:w-16 lg:w-auto"
-				/>
-			</div>
-			<div className="absolute rotate-x-180 hidden top-2/12 left-0 md:block">
-				<img
-					src="/svg/wing-decoration-orange.svg"
-					alt=""
-					className="w-10 -scale-x-100 md:w-16 lg:w-auto"
-				/>
-			</div>
-			<div className="absolute rotate-50 -left-30 top-3/12 opacity-50 hidden md:block">
-				<img src="/svg/square-decoration.svg" alt="" width={250} />
-			</div>
+		<section className="bg-[#F1F1F1] relative w-full overflow-x-hidden pb-20">
+			<Hero text="Organizers" />
 
-			{/* wing decoretion 2*/}
-			<div className="absolute top-[44%] rotate-y-180 -left-11">
-				<img
-					src="/svg/wing-decoration-blue.svg"
-					alt=""
-					className="w-10 -scale-x-100 md:w-16 lg:w-auto"
-				/>
-			</div>
-			<div className="absolute hidden top-[32%] -right-12">
-				<img
-					src="/svg/wing-decoration-orange.svg"
-					alt=""
-					className="w-10 md:w-16 lg:w-auto"
-				/>
-			</div>
-
-			{/* wing decoretion 3 */}
-			<div className="absolute top-[82%] -left-11 rotate-y-180">
-				<img
-					src="/svg/wing-decoration-blue.svg"
-					alt=""
-					className="w-10 -scale-x-100 md:w-16 lg:w-auto"
-				/>
-			</div>
-			<div className="absolute hidden top-[70%] -right-12 md:block">
-				<img
-					src="/svg/wing-decoration-orange.svg"
-					alt=""
-					className="w-10 md:w-16 lg:w-auto"
-				/>
-			</div>
-			<div className="absolute rotate-40 -right-30 top-[63%] opacity-50 hidden md:block">
-				<img src="/svg/square-decoration.svg" alt="" width={270} />
-			</div>
-
-			{parsedOrganizers.map((organizer) => (
-				<div key={organizer.name} className="container mx-auto relative pt-40">
-					<div className="mb-20 relative w-max mx-auto z-10">
-						{/* square decoration */}
-						<div className="absolute rotate-0 -left-[-3.5rem] -top-[4.5rem] hidden md:block">
-							<img
-								src="/svg/square-decoration.svg"
-								alt=""
-								width={85}
-								height={85}
-							/>
-						</div>
-						<div className="absolute rotate-0 -right-[-4.5rem] -bottom-[4.5rem] hidden md:block">
-							<img
-								src="/svg/square-decoration.svg"
-								alt=""
-								width={85}
-								height={85}
-							/>
-						</div>
-
-						<h1 className="font-display relative text-center text-3xl md:text-4xl lg:text-[4rem] font-bold text-foreground uppercase">
-							{organizer.name}
-						</h1>
-					</div>
-
-					<div className="px-5 mx-auto md:px-12 lg:px-0">
+			<div className="py-20">
+				{parsedOrganizers.map((group) => {
+					const isLeadOrganizer = group.name === "Lead Organizers";
+					const isVolunteer = group.name === "Volunteer";
+					return (
 						<div
-							className={cn(
-								"grid gap-4 justify-items-center md:gap-12 md:grid-cols-2 lg:gap-6 lg:grid-cols-3 xl:grid-cols-4",
-								organizer.items.length === 1 &&
-									"md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1",
-								organizer.items.length === 2 &&
-									"md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2",
-								organizer.items.length === 3 &&
-									"md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3",
-							)}
+							key={group.name}
+							className="container mx-auto px-6 lg:px-12 relative mb-24"
 						>
-							{organizer.items.length > 0 ? (
-								organizer.items.map((item) => (
-									<OurTeamCard key={item.id} {...item} />
-								))
-							) : (
-								<div className="col-span-full text-center text-gray-500 py-8 h-[500px] flex items-center justify-center">
-									No {organizer.name} available
+							<div className="mb-16 relative w-max mx-auto z-10 text-center">
+								{/* Title accent - left */}
+								<div
+									className={cn(
+										"absolute -left-16 md:-left-24 -translate-y-1/2 pointer-events-none opacity-70",
+										isLeadOrganizer ? "-bottom-20" : "top-1",
+									)}
+								>
+									<img
+										src="/svg/square-decoration-bw-alt.svg"
+										alt=""
+										width={80}
+										className="rotate-[-135deg]"
+									/>
 								</div>
-							)}
+								{/* Title accent - right */}
+								<div
+									className={cn(
+										"absolute -right-16 md:-right-24 -translate-y-1/2 pointer-events-none opacity-70",
+										isLeadOrganizer ? "top-1" : "-bottom-20",
+									)}
+								>
+									<img
+										src="/svg/square-decoration-bw-alt.svg"
+										alt=""
+										width={80}
+										className="rotate-[-135deg]"
+									/>
+								</div>
+
+								<h2 className="font-display relative text-3xl md:text-4xl lg:text-[4rem] font-bold text-foreground uppercase">
+									{group.name}
+								</h2>
+							</div>
+
+							<div
+								className={cn(
+									"grid gap-8 justify-items-center",
+									isLeadOrganizer
+										? "sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+										: "sm:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl mx-auto",
+									group.items.length === 1 &&
+										"sm:grid-cols-1 lg:grid-cols-1 max-w-xl",
+									group.items.length === 2 &&
+										"sm:grid-cols-2 lg:grid-cols-2 max-w-4xl",
+								)}
+							>
+								{group.items.length > 0 ? (
+									group.items.map(({ id, ...rest }) => {
+										const handleOrganizerClick = (
+											items: OrganizerPublicType[] | VolunteerPublicType[],
+										) => {
+											const org = items.find((o) => o.id === id);
+											if (org) setSelectedPerson(org);
+										};
+
+										if (!isLeadOrganizer) {
+											return (
+												<OurTeamCard
+													key={id}
+													{...(rest as OurTeamCardProps)}
+													onClick={() => {
+														handleOrganizerClick(
+															isVolunteer ? volunteers : organizers,
+														);
+													}}
+												/>
+											);
+										}
+
+										return (
+											<SpeakerCard
+												key={id}
+												{...(rest as SpeakerCardProps)}
+												onClick={() => handleOrganizerClick(organizers)}
+											/>
+										);
+									})
+								) : (
+									<div className="col-span-full text-center text-gray-500 py-8 h-[300px] flex items-center justify-center">
+										No {group.name} available
+									</div>
+								)}
+							</div>
 						</div>
-					</div>
-				</div>
-			))}
+					);
+				})}
+			</div>
+
+			<OrganizerModal
+				isOpen={!!selectedPerson}
+				onClose={() => setSelectedPerson(null)}
+				organizer={selectedPerson}
+			/>
 		</section>
 	);
 };

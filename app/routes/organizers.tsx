@@ -10,7 +10,7 @@ import type { Route } from "./+types/organizers";
 
 export function meta() {
 	return [
-		{ title: "PyCon ID 2025 Organizers" },
+		{ title: "PyCon ID 2026 Organizers" },
 		{ name: "Organizers", content: "Organizers page" },
 	];
 }
@@ -58,13 +58,12 @@ export const loader = async () => {
 			throw new Error(z.prettifyError(parsedResponseVolunteer.error));
 		}
 
-		return {
-			organizers: parsedResponseOrganizers.data?.results || [],
-			volunteers: parsedResponseVolunteer.data?.results || [],
-		};
+		const organizers = parsedResponseOrganizers.data?.results || [];
+		const volunteers = parsedResponseVolunteer.data?.results || [];
+
+		return { organizers, volunteers };
 	} catch (err) {
 		console.error("Failed to fetch organizers data: ", err);
-		// Return empty organizers if there's an error
 		return { organizers: [], volunteers: [] };
 	}
 };
