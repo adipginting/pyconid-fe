@@ -143,10 +143,9 @@ export const OrganizerModal = ({
 						<div className="w-[222px] h-[222px] overflow-hidden bg-[#909090]/10">
 							<img
 								src={
-									organizer.user.profile_picture ||
-									(isVolunteer
+									isVolunteer
 										? parseVolunteerImage({ id: organizer.id })
-										: parseOrganizerImage({ id: organizer.id }))
+										: parseOrganizerImage({ id: organizer.id })
 								}
 								alt={name}
 								onError={onAvatarError}

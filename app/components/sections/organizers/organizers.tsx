@@ -47,44 +47,66 @@ export const OrganizersSection = ({
 		if (organizers?.length) {
 			organizers.forEach((organizer) => {
 				const organizerType = organizer.organizer_type?.name?.toLowerCase();
+				const name = getFullName(organizer);
+				const profilePicture = parseOrganizerImage({ id: organizer.id });
+				const email = organizer?.user?.email || undefined;
 
-				const parsedItem: SpeakerCardProps & { id: string } = {
+				if (organizerType?.includes("lead")) {
+					lead.push({
+						id: organizer.id,
+						name,
+						description: organizer.organizer_type?.name || "",
+						company: "",
+						image: profilePicture,
+						twitter:
+							(organizer?.user?.twitter_username &&
+								`https://twitter.com/${organizer?.user?.twitter_username}`) ||
+							undefined,
+						instagram:
+							(organizer?.user?.instagram_username &&
+								`https://www.instagram.com/${organizer?.user?.instagram_username}`) ||
+							undefined,
+						linkedin:
+							(organizer?.user?.linkedin_username &&
+								`https://www.linkedin.com/in/${organizer?.user?.linkedin_username}`) ||
+							undefined,
+						email,
+					});
+					return;
+				}
+
+				const ourTeamItem: OurTeamCardProps & { id: string } = {
 					id: organizer.id,
-					name: getFullName(organizer),
-					description: organizer.organizer_type?.name || "",
-					company: "",
-					image:
-						organizer.user.profile_picture ||
-						parseOrganizerImage({ id: organizer.id }),
-					twitter:
+					name,
+					jobTitle: organizer.organizer_type?.name || "",
+					profile_picture: profilePicture,
+					twitter_username:
 						(organizer?.user?.twitter_username &&
 							`https://twitter.com/${organizer?.user?.twitter_username}`) ||
 						undefined,
-					instagram:
+					instagram_username:
 						(organizer?.user?.instagram_username &&
 							`https://www.instagram.com/${organizer?.user?.instagram_username}`) ||
 						undefined,
-					linkedin:
+					linkedin_username:
 						(organizer?.user?.linkedin_username &&
 							`https://www.linkedin.com/in/${organizer?.user?.linkedin_username}`) ||
 						undefined,
-					email: organizer?.user?.email || undefined,
+					email,
 				};
 
-				if (organizerType?.includes("lead")) {
-					lead.push(parsedItem);
-				} else if (organizerType?.includes("program")) {
-					program.push(parsedItem);
+				if (organizerType?.includes("program")) {
+					program.push(ourTeamItem);
 				} else if (organizerType?.includes("website")) {
-					website.push(parsedItem);
+					website.push(ourTeamItem);
 				} else if (organizerType?.includes("coordinator")) {
-					coordinator.push(parsedItem);
+					coordinator.push(ourTeamItem);
 				} else if (organizerType?.includes("experience")) {
-					experience.push(parsedItem);
+					experience.push(ourTeamItem);
 				} else if (organizerType?.includes("logistic")) {
-					logistic.push(parsedItem);
+					logistic.push(ourTeamItem);
 				} else if (organizerType?.includes("creative")) {
-					creative.push(parsedItem);
+					creative.push(ourTeamItem);
 				}
 			});
 		}
@@ -95,7 +117,9 @@ export const OrganizersSection = ({
 					id: volunteerItem.id,
 					name: getFullName(volunteerItem),
 					email: volunteerItem?.user?.email || undefined,
-					profile_picture: parseVolunteerImage({ id: volunteerItem.id }),
+					profile_picture:
+						volunteerItem.user.profile_picture ||
+						parseVolunteerImage({ id: volunteerItem.id }),
 					twitter_username:
 						(volunteerItem?.user?.twitter_username &&
 							`https://twitter.com/${volunteerItem?.user?.twitter_username}`) ||

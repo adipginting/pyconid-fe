@@ -1,5 +1,5 @@
 import { MailIcon } from "lucide-react";
-import { cn, onAvatarError } from "~/lib/utils";
+import { cn, useAvatarError } from "~/lib/utils";
 import { Instagram } from "../icons/instagram";
 import { Linkedin } from "../icons/linkedin";
 import { Twitter } from "../icons/twitter";
@@ -28,6 +28,7 @@ export const SpeakerCard = ({
 	onClick,
 }: SpeakerCardProps) => {
 	const hasSocialLinks = instagram || twitter || linkedin || email;
+	const { ref, onError } = useAvatarError();
 
 	return (
 		<button
@@ -52,11 +53,12 @@ export const SpeakerCard = ({
 					/>
 					{image && (
 						<img
+							ref={ref}
 							src={image}
 							alt={name}
 							className="w-full h-112 object-cover object-bottom z-0"
 							loading="lazy"
-							onError={onAvatarError}
+							onError={onError}
 						/>
 					)}
 

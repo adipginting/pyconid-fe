@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
+import { useCallback, useEffect, useRef } from "react";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -49,4 +50,25 @@ export const onAvatarError = (
 	};
 	element.src = "/images/default-avatar.webp";
 	element.srcset = "/images/default-avatar.webp";
+};
+
+export const useAvatarError = () => {
+	const ref = useRef<HTMLImageElement>(null);
+
+	const onError = useCallback(
+		(evt: React.SyntheticEvent<HTMLImageElement, Event>) => {
+			onAvatarError(evt);
+		},
+		[],
+	);
+
+	useEffect(() => {
+		const img = ref.current;
+		if (img?.complete && img.naturalWidth === 0) {
+			img.src = "/images/default-avatar.webp";
+			img.srcset = "/images/default-avatar.webp";
+		}
+	}, []);
+
+	return { ref, onError };
 };
