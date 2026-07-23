@@ -68,9 +68,9 @@ export const PatronSection = ({ patrons }: PatronSectionProps) => {
 						return (
 							<article
 								key={patron.id}
-								className="flex w-full max-w-64 flex-col items-center gap-5"
+								className="flex w-full max-w-40 flex-col items-center gap-2"
 							>
-								<div className="flex aspect-square w-full items-center justify-center overflow-hidden rounded-full border-2 border-foreground bg-background">
+								<div className="flex aspect-square w-30 items-center justify-center overflow-hidden rounded-full border-2 border-foreground bg-background">
 									<img
 										src={images[patron.id] ?? "/images/default-avatar.webp"}
 										alt={name}
