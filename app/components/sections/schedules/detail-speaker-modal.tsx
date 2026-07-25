@@ -225,12 +225,15 @@ function ScheduleItemCard({
 				</div>
 			</div>
 
-			<a
-				href={`/schedule/${schedule.id}`}
-				className="block w-full text-center bg-schedule-surface text-schedule-heading-light font-bold text-sm uppercase px-6 py-3"
-			>
-				Watch now
-			</a>
+      { schedule.stream?.id && (
+          <a
+            href={`/streaming/${schedule.stream?.id}`}
+            className="block w-full text-center bg-schedule-surface text-schedule-heading-light font-bold text-sm uppercase px-6 py-3"
+          >
+            Watch now
+          </a>
+        )
+      }
 		</div>
 	);
 }
@@ -444,7 +447,7 @@ export const DetailSpeakerModal = ({
 
 									{selectedHour &&
 										visibleSchedules.map((schedule) => (
-											<ScheduleItemCard key={schedule.id} schedule={schedule} />
+                        <ScheduleItemCard key={schedule.id} schedule={schedule} />
 										))}
 
 									{hasMore && (
