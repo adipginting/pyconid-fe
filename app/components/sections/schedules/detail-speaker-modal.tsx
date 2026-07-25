@@ -38,16 +38,6 @@ function getHourMinuteLabel(date: Date): string {
 	}).format(date);
 }
 
-function formatDayDate(dateKey: string): string {
-	const date = new Date(dateKey);
-	return date.toLocaleDateString("en-US", {
-		weekday: "long",
-		day: "numeric",
-		month: "long",
-		year: "numeric",
-	});
-}
-
 function SocialLink({
 	href,
 	icon,
