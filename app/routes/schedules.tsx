@@ -8,7 +8,7 @@ import type { Route } from "./+types/schedules";
 
 export function meta() {
 	return [
-		{ title: "PyCon ID 2025 Schedules" },
+		{ title: "PyCon ID 2026 Schedules" },
 		{ name: "Schedules", content: "Schedules page" },
 	];
 }
