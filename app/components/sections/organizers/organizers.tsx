@@ -10,12 +10,11 @@ import {
 	type SpeakerCardProps,
 } from "~/components/shared/card/speaker";
 import { Hero } from "~/components/shared/hero/hero";
-import { cn, parseOrganizerImage, parseVolunteerImage } from "~/lib/utils";
+import { cn, parseOrganizerImage } from "~/lib/utils";
 import { OrganizerModal } from "./organizer-modal";
 
 interface OrganizersSectionProps {
 	organizers: OrganizerPublicType[];
-	volunteers: VolunteerPublicType[];
 }
 
 // Helper function to get full name
@@ -26,10 +25,7 @@ const getFullName = (organizer: OrganizerPublicType | VolunteerPublicType) => {
 	return `${firstName} ${lastName}`.trim() || "Unknown Speaker";
 };
 
-export const OrganizersSection = ({
-	organizers,
-	volunteers,
-}: OrganizersSectionProps) => {
+export const OrganizersSection = ({ organizers }: OrganizersSectionProps) => {
 	const [selectedPerson, setSelectedPerson] = useState<
 		OrganizerPublicType | VolunteerPublicType | null
 	>(null);
@@ -38,11 +34,9 @@ export const OrganizersSection = ({
 		const lead: (SpeakerCardProps & { id: string })[] = [];
 		const program: (OurTeamCardProps & { id: string })[] = [];
 		const website: (OurTeamCardProps & { id: string })[] = [];
-		const coordinator: (OurTeamCardProps & { id: string })[] = [];
 		const experience: (OurTeamCardProps & { id: string })[] = [];
-		const logistic: (OurTeamCardProps & { id: string })[] = [];
 		const creative: (OurTeamCardProps & { id: string })[] = [];
-		const volunteer: (OurTeamCardProps & { id: string })[] = [];
+		const partnership: (OurTeamCardProps & { id: string })[] = [];
 
 		if (organizers?.length) {
 			organizers.forEach((organizer) => {
@@ -51,7 +45,7 @@ export const OrganizersSection = ({
 				const profilePicture = parseOrganizerImage({ id: organizer.id });
 				const email = organizer?.user?.email || undefined;
 
-				if (organizerType?.includes("lead")) {
+				if (organizerType === "lead organizer") {
 					lead.push({
 						id: organizer.id,
 						name,
@@ -95,63 +89,36 @@ export const OrganizersSection = ({
 					email,
 				};
 
-				if (organizerType?.includes("program")) {
+				if (organizerType === "lead organizer") {
+					lead.push({
+						...ourTeamItem,
+						name: ourTeamItem.name ?? "",
+						description: "",
+						company: "",
+					});
+				} else if (organizerType === "talks & program") {
 					program.push(ourTeamItem);
-				} else if (organizerType?.includes("website")) {
+				} else if (organizerType === "website") {
 					website.push(ourTeamItem);
-				} else if (organizerType?.includes("coordinator")) {
-					coordinator.push(ourTeamItem);
-				} else if (organizerType?.includes("experience")) {
+				} else if (organizerType === "logistic & hospitality") {
 					experience.push(ourTeamItem);
-				} else if (organizerType?.includes("logistic")) {
-					logistic.push(ourTeamItem);
-				} else if (organizerType?.includes("creative")) {
+				} else if (organizerType === "publication & design") {
 					creative.push(ourTeamItem);
+				} else if (organizerType === "partnership") {
+					partnership.push(ourTeamItem);
 				}
 			});
 		}
 
-		if (volunteers?.length) {
-			volunteers.forEach((volunteerItem) => {
-				const parsedItem: OurTeamCardProps & { id: string } = {
-					id: volunteerItem.id,
-					name: getFullName(volunteerItem),
-					email: volunteerItem?.user?.email || undefined,
-					profile_picture:
-						volunteerItem.user.profile_picture ||
-						parseVolunteerImage({ id: volunteerItem.id }),
-					twitter_username:
-						(volunteerItem?.user?.twitter_username &&
-							`https://twitter.com/${volunteerItem?.user?.twitter_username}`) ||
-						undefined,
-					instagram_username:
-						(volunteerItem?.user?.instagram_username &&
-							`https://www.instagram.com/${volunteerItem?.user?.instagram_username}`) ||
-						undefined,
-					facebook_username:
-						(volunteerItem?.user?.facebook_username &&
-							`https://www.facebook.com/${volunteerItem?.user?.facebook_username}`) ||
-						undefined,
-					linkedin_username:
-						(volunteerItem?.user?.linkedin_username &&
-							`https://www.linkedin.com/in/${volunteerItem?.user?.linkedin_username}`) ||
-						undefined,
-					website: volunteerItem?.user?.website || undefined,
-				};
-				volunteer.push(parsedItem);
-			});
-		}
-
 		return [
-			{ name: "Lead Organizers", items: lead },
-			{ name: "Programs", items: program },
+			{ name: "Lead Organizer", items: lead },
+			{ name: "Talks & Program", items: program },
 			{ name: "Website", items: website },
-			{ name: "Participant Experience", items: experience },
-			{ name: "Logistic", items: logistic },
-			{ name: "Creative", items: creative },
-			{ name: "Volunteer", items: volunteer },
+			{ name: "Logistic & Hospitality", items: experience },
+			{ name: "Publication & Design", items: creative },
+			{ name: "Partnership", items: partnership },
 		];
-	}, [organizers, organizers.length, volunteers, volunteers.length]);
+	}, [organizers, organizers.length]);
 
 	return (
 		<section className="bg-[#F1F1F1] relative w-full overflow-x-hidden pb-20">
@@ -159,8 +126,7 @@ export const OrganizersSection = ({
 
 			<div className="py-20">
 				{parsedOrganizers.map((group) => {
-					const isLeadOrganizer = group.name === "Lead Organizers";
-					const isVolunteer = group.name === "Volunteer";
+					const isLeadOrganizer = group.name === "Lead Organizer";
 					return (
 						<div
 							key={group.name}
@@ -225,9 +191,7 @@ export const OrganizersSection = ({
 													key={id}
 													{...(rest as OurTeamCardProps)}
 													onClick={() => {
-														handleOrganizerClick(
-															isVolunteer ? volunteers : organizers,
-														);
+														handleOrganizerClick(organizers);
 													}}
 												/>
 											);
