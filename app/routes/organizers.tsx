@@ -45,7 +45,6 @@ export const loader = async () => {
 };
 
 export default function Organizers({ loaderData }: Route.ComponentProps) {
-	console.log("Organizers: ", loaderData.organizers);
 	return (
 		<main>
 			<Header />

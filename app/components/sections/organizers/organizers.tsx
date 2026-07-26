@@ -96,7 +96,7 @@ export const OrganizersSection = ({ organizers }: OrganizersSectionProps) => {
 						description: "",
 						company: "",
 					});
-				} else if (organizerType === "talks & program") {
+				} else if (organizerType === "talks & programs") {
 					program.push(ourTeamItem);
 				} else if (organizerType === "website") {
 					website.push(ourTeamItem);
@@ -112,7 +112,7 @@ export const OrganizersSection = ({ organizers }: OrganizersSectionProps) => {
 
 		return [
 			{ name: "Lead Organizer", items: lead },
-			{ name: "Talks & Program", items: program },
+			{ name: "Talks & Programs", items: program },
 			{ name: "Website", items: website },
 			{ name: "Logistic & Hospitality", items: experience },
 			{ name: "Publication & Design", items: creative },
