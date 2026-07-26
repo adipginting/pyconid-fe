@@ -11,6 +11,8 @@ export const organizerDetailUserSchema = z.object({
 	last_name: z.string().nullable(),
 	username: z.string().nullable(),
 	bio: z.string().nullable(),
+	job_title: z.string().nullable(),
+	affiliation: z.string().nullable(),
 	profile_picture: z.string().nullable(),
 	email: z.string().nullable(),
 	website: z.string().nullable(),

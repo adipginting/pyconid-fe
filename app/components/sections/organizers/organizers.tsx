@@ -45,34 +45,11 @@ export const OrganizersSection = ({ organizers }: OrganizersSectionProps) => {
 				const profilePicture = parseOrganizerImage({ id: organizer.id });
 				const email = organizer?.user?.email || undefined;
 
-				if (organizerType === "lead organizer") {
-					lead.push({
-						id: organizer.id,
-						name,
-						description: organizer.organizer_type?.name || "",
-						company: "",
-						image: profilePicture,
-						twitter:
-							(organizer?.user?.twitter_username &&
-								`https://twitter.com/${organizer?.user?.twitter_username}`) ||
-							undefined,
-						instagram:
-							(organizer?.user?.instagram_username &&
-								`https://www.instagram.com/${organizer?.user?.instagram_username}`) ||
-							undefined,
-						linkedin:
-							(organizer?.user?.linkedin_username &&
-								`https://www.linkedin.com/in/${organizer?.user?.linkedin_username}`) ||
-							undefined,
-						email,
-					});
-					return;
-				}
-
 				const ourTeamItem: OurTeamCardProps & { id: string } = {
 					id: organizer.id,
 					name,
-					jobTitle: organizer.organizer_type?.name || "",
+					jobTitle: organizer.user.job_title || "",
+					affiliation: organizer.user.affiliation || "",
 					profile_picture: profilePicture,
 					twitter_username:
 						(organizer?.user?.twitter_username &&
@@ -93,8 +70,8 @@ export const OrganizersSection = ({ organizers }: OrganizersSectionProps) => {
 					lead.push({
 						...ourTeamItem,
 						name: ourTeamItem.name ?? "",
-						description: "",
-						company: "",
+						description: ourTeamItem.jobTitle || "",
+						company: ourTeamItem.affiliation || "",
 					});
 				} else if (organizerType === "talks & programs") {
 					program.push(ourTeamItem);
