@@ -73,7 +73,11 @@ export const TicketPurchaseModal = ({
 		if (!voucherCode.trim()) return;
 		setVoucherState("verifying");
 		fetcher.submit(
-			{ intent: "apply-voucher", voucher_code: voucherCode.trim() },
+			{
+				intent: "apply-voucher",
+				voucher_code: voucherCode.trim(),
+				ticket_id: ticket.id,
+			},
 			{ method: "post" },
 		);
 	};
