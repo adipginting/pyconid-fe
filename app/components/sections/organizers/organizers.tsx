@@ -21,7 +21,7 @@ const getFullName = (organizer: OrganizerPublicType) => {
 	if (!organizer?.user) return "Unknown Organizer";
 	const firstName = organizer.user.first_name || "";
 	const lastName = organizer.user.last_name || "";
-	return `${firstName} ${lastName}`.trim() || "Unknown Speaker";
+	return `${firstName} ${lastName}`.trim() || "Unknown Organizer";
 };
 
 export const OrganizersSection = ({ organizers }: OrganizersSectionProps) => {
