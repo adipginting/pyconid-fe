@@ -1,5 +1,5 @@
 import { MailIcon } from "lucide-react";
-import { cn, useAvatarError } from "~/lib/utils";
+import { cn, onAvatarError } from "~/lib/utils";
 import { Facebook } from "../icons/facebook";
 import { Instagram } from "../icons/instagram";
 import { Linkedin } from "../icons/linkedin";
@@ -36,8 +36,6 @@ export const OurTeamCard = ({
 	website,
 	onClick,
 }: OurTeamCardProps) => {
-	const { ref, onError } = useAvatarError();
-
 	return (
 		<div
 			{...(onClick
@@ -68,11 +66,10 @@ export const OurTeamCard = ({
 				/>
 				<div className="size-44 rounded-full overflow-hidden border-2 border-background shadow-lg relative z-0">
 					<img
-						ref={ref}
 						src={profile_picture?.trim() || "/images/default-avatar.webp"}
 						alt={name}
 						className="size-full object-cover"
-						onError={onError}
+						onError={onAvatarError}
 						loading="lazy"
 					/>
 				</div>

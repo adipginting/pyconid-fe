@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import type { OrganizerPublicType } from "~/api/schema/organizer";
-import type { VolunteerPublicType } from "~/api/schema/volunteer";
 import {
 	OurTeamCard,
 	type OurTeamCardProps,
@@ -18,7 +17,7 @@ interface OrganizersSectionProps {
 }
 
 // Helper function to get full name
-const getFullName = (organizer: OrganizerPublicType | VolunteerPublicType) => {
+const getFullName = (organizer: OrganizerPublicType) => {
 	if (!organizer?.user) return "Unknown Organizer";
 	const firstName = organizer.user.first_name || "";
 	const lastName = organizer.user.last_name || "";
@@ -26,9 +25,8 @@ const getFullName = (organizer: OrganizerPublicType | VolunteerPublicType) => {
 };
 
 export const OrganizersSection = ({ organizers }: OrganizersSectionProps) => {
-	const [selectedPerson, setSelectedPerson] = useState<
-		OrganizerPublicType | VolunteerPublicType | null
-	>(null);
+	const [selectedPerson, setSelectedPerson] =
+		useState<OrganizerPublicType | null>(null);
 
 	const parsedOrganizers = useMemo(() => {
 		const lead: (SpeakerCardProps & { id: string })[] = [];
@@ -45,44 +43,60 @@ export const OrganizersSection = ({ organizers }: OrganizersSectionProps) => {
 				const profilePicture = parseOrganizerImage({ id: organizer.id });
 				const email = organizer?.user?.email || undefined;
 
-				const ourTeamItem: OurTeamCardProps & { id: string } = {
-					id: organizer.id,
-					name,
-					jobTitle: organizer.user.job_title || "",
-					affiliation: organizer.user.affiliation || "",
-					profile_picture: profilePicture,
-					twitter_username:
-						(organizer?.user?.twitter_username &&
-							`https://twitter.com/${organizer?.user?.twitter_username}`) ||
-						undefined,
-					instagram_username:
-						(organizer?.user?.instagram_username &&
-							`https://www.instagram.com/${organizer?.user?.instagram_username}`) ||
-						undefined,
-					linkedin_username:
-						(organizer?.user?.linkedin_username &&
-							`https://www.linkedin.com/in/${organizer?.user?.linkedin_username}`) ||
-						undefined,
-					email,
-				};
-
 				if (organizerType === "lead organizer") {
 					lead.push({
-						...ourTeamItem,
-						name: ourTeamItem.name ?? "",
-						description: ourTeamItem.jobTitle || "",
-						company: ourTeamItem.affiliation || "",
+						id: organizer.id,
+						name,
+						description: organizer.user.job_title || "",
+						company: organizer.user.company || "",
+						image: profilePicture,
+						twitter:
+							(organizer?.user?.twitter_username &&
+								`https://twitter.com/${organizer?.user?.twitter_username}`) ||
+							undefined,
+						instagram:
+							(organizer?.user?.instagram_username &&
+								`https://www.instagram.com/${organizer?.user?.instagram_username}`) ||
+							undefined,
+						linkedin:
+							(organizer?.user?.linkedin_username &&
+								`https://www.linkedin.com/in/${organizer?.user?.linkedin_username}`) ||
+							undefined,
+						email,
 					});
-				} else if (organizerType === "talks & programs") {
-					program.push(ourTeamItem);
-				} else if (organizerType === "website") {
-					website.push(ourTeamItem);
-				} else if (organizerType === "logistic & hospitality") {
-					experience.push(ourTeamItem);
-				} else if (organizerType === "publication & design") {
-					creative.push(ourTeamItem);
-				} else if (organizerType === "partnership") {
-					partnership.push(ourTeamItem);
+				} else {
+					const ourTeamItem: OurTeamCardProps & { id: string } = {
+						id: organizer.id,
+						name,
+						jobTitle: organizer.user.job_title || "",
+						affiliation: organizer.user.company || "",
+						profile_picture: profilePicture,
+						twitter_username:
+							(organizer?.user?.twitter_username &&
+								`https://twitter.com/${organizer?.user?.twitter_username}`) ||
+							undefined,
+						instagram_username:
+							(organizer?.user?.instagram_username &&
+								`https://www.instagram.com/${organizer?.user?.instagram_username}`) ||
+							undefined,
+						linkedin_username:
+							(organizer?.user?.linkedin_username &&
+								`https://www.linkedin.com/in/${organizer?.user?.linkedin_username}`) ||
+							undefined,
+						email,
+					};
+
+					if (organizerType === "talks & programs") {
+						program.push(ourTeamItem);
+					} else if (organizerType === "website") {
+						website.push(ourTeamItem);
+					} else if (organizerType === "logistic & hospitality") {
+						experience.push(ourTeamItem);
+					} else if (organizerType === "publication & design") {
+						creative.push(ourTeamItem);
+					} else if (organizerType === "partnership") {
+						partnership.push(ourTeamItem);
+					}
 				}
 			});
 		}
@@ -156,7 +170,7 @@ export const OrganizersSection = ({ organizers }: OrganizersSectionProps) => {
 								{group.items.length > 0 ? (
 									group.items.map(({ id, ...rest }) => {
 										const handleOrganizerClick = (
-											items: OrganizerPublicType[] | VolunteerPublicType[],
+											items: OrganizerPublicType[],
 										) => {
 											const org = items.find((o) => o.id === id);
 											if (org) setSelectedPerson(org);

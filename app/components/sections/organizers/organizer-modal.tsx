@@ -1,22 +1,18 @@
 import { Mail, X } from "lucide-react";
 import { useEffect } from "react";
 import type { OrganizerPublicType } from "~/api/schema/organizer";
-import type { VolunteerPublicType } from "~/api/schema/volunteer";
+
 import { Facebook } from "~/components/shared/icons/facebook";
 import { Instagram } from "~/components/shared/icons/instagram";
 import { Linkedin } from "~/components/shared/icons/linkedin";
 import { Twitter } from "~/components/shared/icons/twitter";
 import { Earth } from "~/components/shared/icons/website";
-import {
-	onAvatarError,
-	parseOrganizerImage,
-	parseVolunteerImage,
-} from "~/lib/utils";
+import { onAvatarError, parseOrganizerImage } from "~/lib/utils";
 
 export interface OrganizerModalProps {
 	isOpen: boolean;
 	onClose: () => void;
-	organizer: OrganizerPublicType | VolunteerPublicType | null;
+	organizer: OrganizerPublicType | null;
 }
 
 function SocialLink({
@@ -60,15 +56,11 @@ export const OrganizerModal = ({
 
 	if (!isOpen || !organizer) return null;
 
-	const isVolunteer = !("organizer_type" in organizer);
-
 	const firstName = organizer.user.first_name || "";
 	const lastName = organizer.user.last_name || "";
 	const name = `${firstName} ${lastName}`.trim() || "Unknown Organizer";
-	const bio = isVolunteer ? null : organizer.user.bio;
-	const typeName = isVolunteer
-		? "Volunteer"
-		: organizer.organizer_type?.name || "";
+	const bio = organizer.user.bio;
+	const typeName = organizer.organizer_type?.name || "";
 
 	const iconClass = "w-5 h-5 text-[#282828]";
 
@@ -142,11 +134,7 @@ export const OrganizerModal = ({
 					<div className="shrink-0 mx-auto md:mx-0">
 						<div className="w-[222px] h-[222px] overflow-hidden bg-[#909090]/10">
 							<img
-								src={
-									isVolunteer
-										? parseVolunteerImage({ id: organizer.id })
-										: parseOrganizerImage({ id: organizer.id })
-								}
+								src={parseOrganizerImage({ id: organizer.id })}
 								alt={name}
 								onError={onAvatarError}
 								className="object-cover w-full h-full"
