@@ -62,6 +62,15 @@ export const OrganizersSection = ({ organizers }: OrganizersSectionProps) => {
 							(organizer?.user?.linkedin_username &&
 								`https://www.linkedin.com/in/${organizer?.user?.linkedin_username}`) ||
 							undefined,
+						facebook:
+							(organizer?.user?.facebook_username &&
+								`https://www.facebook.com/${organizer?.user?.facebook_username}`) ||
+							undefined,
+						website: organizer?.user?.website || undefined,
+						github:
+							(organizer?.user?.github_username &&
+								`https://github.com/${organizer?.user?.github_username}`) ||
+							undefined,
 						email,
 					});
 				} else {
@@ -82,6 +91,15 @@ export const OrganizersSection = ({ organizers }: OrganizersSectionProps) => {
 						linkedin_username:
 							(organizer?.user?.linkedin_username &&
 								`https://www.linkedin.com/in/${organizer?.user?.linkedin_username}`) ||
+							undefined,
+						facebook_username:
+							(organizer?.user?.facebook_username &&
+								`https://www.facebook.com/${organizer?.user?.facebook_username}`) ||
+							undefined,
+						website: organizer?.user?.website || undefined,
+						github:
+							(organizer?.user?.github_username &&
+								`https://github.com/${organizer?.user?.github_username}`) ||
 							undefined,
 						email,
 					};

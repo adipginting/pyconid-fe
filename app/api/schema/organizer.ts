@@ -21,6 +21,7 @@ export const organizerDetailUserSchema = z.object({
 	linkedin_username: z.string().nullable(),
 	instagram_username: z.string().nullable(),
 	twitter_username: z.string().nullable(),
+	github_username: z.string().nullable().optional(),
 });
 
 export const organizerDetailSchema = z.object({

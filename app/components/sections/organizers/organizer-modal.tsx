@@ -60,7 +60,8 @@ export const OrganizerModal = ({
 	const lastName = organizer.user.last_name || "";
 	const name = `${firstName} ${lastName}`.trim() || "Unknown Organizer";
 	const bio = organizer.user.bio;
-	const typeName = organizer.organizer_type?.name || "";
+	const jobTitle = organizer.user.job_title || "";
+	const company = organizer.user.company || "";
 
 	const iconClass = "w-5 h-5 text-[#282828]";
 
@@ -94,6 +95,12 @@ export const OrganizerModal = ({
 			icon: <Twitter className={iconClass} />,
 			label: "X",
 			value: organizer.user.twitter_username,
+		},
+		{
+			href: `https://github.com/${organizer.user.github_username}`,
+			icon: <img src="/svg/github.svg" alt="GitHub" className={iconClass} />,
+			label: "GitHub",
+			value: organizer.user.github_username,
 		},
 		{
 			href: `mailto:${organizer.user.email}`,
@@ -165,9 +172,11 @@ export const OrganizerModal = ({
 							<p className="text-[#F1F2F3] font-bold text-base md:text-lg uppercase">
 								{name}
 							</p>
-							{typeName && (
+							{(jobTitle || company) && (
 								<p className="text-[#F1F2F3]/90 text-sm md:text-base">
-									{typeName}
+									{jobTitle}
+									{jobTitle && company && <span className="mx-1"> @ </span>}
+									{company}
 								</p>
 							)}
 						</div>
