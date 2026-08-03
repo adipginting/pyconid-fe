@@ -119,8 +119,6 @@ export const OrganizersSection = ({ organizers }: OrganizersSectionProps) => {
 			});
 		}
 
-		console.log("PARTNERSHIP ", partnership);
-
 		return [
 			{ name: "Lead Organizer", items: lead },
 			{ name: "Talks & Programs", items: program },
