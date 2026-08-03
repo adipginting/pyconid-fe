@@ -222,8 +222,9 @@ export const SpeakersSection = ({ speakers }: SpeakersSectionProps) => {
 									organizer.data.length === 1 &&
 										"sm:grid-cols-1 lg:grid-cols-1",
 									organizer.data.length === 2 &&
-                    "sm:grid-cols-2 lg:grid-cols-2 max-w-4xl",
-                  organizer.data.length > 1 && "lg:[&>:nth-child(3n+1):last-child]:col-start-2"
+										"sm:grid-cols-2 lg:grid-cols-2 max-w-4xl",
+									organizer.data.length > 1 &&
+										"lg:[&>:nth-child(3n+1):last-child]:col-start-2",
 								)}
 							>
 								{organizer.data.length > 0 ? (
