@@ -73,7 +73,8 @@ export const CommunitySection = () => {
 											alt="PyLadies Yogyakarta"
 											className="object-cover max-h-30 mx-auto"
 										/>
-									</a><a
+									</a>
+									<a
 										href="https://www.instagram.com/pyladies.bdg/"
 										target="_blank"
 										rel="noreferrer"
